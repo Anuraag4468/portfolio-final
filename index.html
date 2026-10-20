@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>P. Anuraag Christopher — Systems Engineering Portfolio</title>
+<meta name="description" content="Portfolio of P. Anuraag Christopher, B.Tech CSE Core student at VIT Vellore focused on low-level C++, memory and POSIX sockets." />
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        display: ['"Space Grotesk"', 'sans-serif'],
+        sans: ['"IBM Plex Sans"', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'monospace'],
+      },
+      colors: {
+        ink: { 950: '#0d0f12', 900: '#14171c', 800: '#1b1f26', 700: '#262b34', 600: '#363c47' },
+        bone: '#e9e6df',
+        ash: '#9a9ea6',
+        amber: { DEFAULT: '#d9a441', soft: '#d9a44122' },
+        sage: '#8fae8b',
+      },
+    },
+  },
+};
+</script>
+<style>
+  body { background:#0d0f12; color:#e9e6df; }
+  .grid-bg { background-image: linear-gradient(#ffffff08 1px, transparent 1px), linear-gradient(90deg,#ffffff08 1px, transparent 1px); background-size: 48px 48px; }
+  .card { background:#14171c; border:1px solid #262b34; border-radius:1rem; transition:border-color .25s, transform .25s; }
+  .card:hover { border-color:#d9a44166; }
+  .label { font-family:'JetBrains Mono',monospace; font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:#d9a441; }
+  .tab-btn[aria-selected="true"] { background:#e9e6df; color:#0d0f12; }
+  .reveal { opacity:0; transform:translateY(16px); transition:all .7s ease; }
+  .reveal.in { opacity:1; transform:none; }
+  dialog::backdrop { background:#000c; backdrop-filter: blur(4px); }
+  .chip { font-family:'JetBrains Mono',monospace; font-size:.72rem; padding:.25rem .6rem; border:1px solid #363c47; border-radius:999px; color:#c9c6bf; }
+  .card { position:relative; }
+  .card::before { content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none; opacity:0; transition:opacity .25s;
+    background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%), #d9a44120, transparent 70%); }
+  .card:hover::before { opacity:1; }
+  .card.reveal.in:hover { transform:translateY(-3px); }
+  .nav-link { transition:color .2s; } .nav-link.active { color:#e9e6df; }
+  #progress { position:fixed; top:0; left:0; height:2px; width:0; background:#d9a441; z-index:60; }
+  dialog[open] { animation:pop .25s ease; } @keyframes pop { from { opacity:0; transform:scale(.96); } }
+  @media (prefers-reduced-motion:reduce) { .reveal { transition:none; } dialog[open] { animation:none; } }
+  @media print {
+    @page { margin: 14mm; }
+    body { background:#fff !important; color:#111 !important; }
+    .no-print { display:none !important; }
+    .card { background:#fff !important; border-color:#bbb !important; break-inside:avoid; }
+    .grid-bg { background:none !important; }
+    .reveal { opacity:1 !important; transform:none !important; }
+    .tab-panel { display:block !important; }
+    * { color:#111 !important; }
+    .label { color:#7a5a12 !important; }
+    section { padding-top:1rem !important; padding-bottom:1rem !important; }
+  }
+
+  .sec-bg{position:relative;overflow:hidden}
+  .sec-bg::before{content:"";position:absolute;inset:-20% 0;background-image:var(--bg);pointer-events:none;transform:translateY(calc(var(--py,0)*1px));-webkit-mask-image:linear-gradient(#0000,#000 25%,#000 75%,#0000);mask-image:linear-gradient(#0000,#000 25%,#000 75%,#0000)}
+  .sec-bg>div{position:relative}
+  .bg-code{--bg:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22260%22%20height%3D%22200%22%20font-family%3D%22monospace%22%20font-size%3D%2215%22%20fill%3D%22%23d9a441%22%20fill-opacity%3D%22.1%22%3E%3Ctext%20x%3D%2210%22%20y%3D%2230%22%3E%7B%20%7D%3C/text%3E%3Ctext%20x%3D%22120%22%20y%3D%2260%22%3E%26lt%3B/%26gt%3B%3C/text%3E%3Ctext%20x%3D%2230%22%20y%3D%22110%22%3E%23include%3C/text%3E%3Ctext%20x%3D%22170%22%20y%3D%22130%22%3E0xFF%3C/text%3E%3Ctext%20x%3D%2290%22%20y%3D%22175%22%3E%3D%26gt%3B%20%3A%3A%3C/text%3E%3Ctext%20x%3D%22210%22%20y%3D%2220%22%3E%3B%3C/text%3E%3C/svg%3E")}.bg-circuit{--bg:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22160%22%20height%3D%22160%22%20fill%3D%22none%22%20stroke%3D%22%238fae8b%22%20stroke-opacity%3D%22.14%22%20stroke-width%3D%221.5%22%3E%3Cpath%20d%3D%22M0%2040H50V90H110M110%2090V160M50%2090V130H20M160%2020H120V60%22/%3E%3Cg%20fill%3D%22%238fae8b%22%20fill-opacity%3D%22.2%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2240%22%20r%3D%224%22/%3E%3Ccircle%20cx%3D%22110%22%20cy%3D%2290%22%20r%3D%224%22/%3E%3Ccircle%20cx%3D%22120%22%20cy%3D%2260%22%20r%3D%224%22/%3E%3Ccircle%20cx%3D%2220%22%20cy%3D%22130%22%20r%3D%224%22/%3E%3C/g%3E%3C/svg%3E")}.bg-hex{--bg:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22300%22%20height%3D%22120%22%20font-family%3D%22monospace%22%20font-size%3D%2212%22%20fill%3D%22%23e9e6df%22%20fill-opacity%3D%22.06%22%3E%3Ctext%20x%3D%220%22%20y%3D%2220%22%3E47%2045%2054%2020%202F%2020%2048%2054%2054%2050%3C/text%3E%3Ctext%20x%3D%2240%22%20y%3D%2260%22%3E2F%2031%202E%2031%200D%200A%207B%207D%203B%2000%3C/text%3E%3Ctext%20x%3D%220%22%20y%3D%22100%22%3E0D%200A%200D%200A%2048%2065%206C%206C%206F%2021%3C/text%3E%3C/svg%3E")}
+  .hero>.max-w-6xl{position:relative;z-index:1}
+  #rain{position:absolute;inset:0;width:100%;height:100%;opacity:.5;pointer-events:none;-webkit-mask-image:linear-gradient(#000 55%,#0000);mask-image:linear-gradient(#000 55%,#0000)}
+  .float-win{position:absolute;z-index:0;white-space:pre;font:11px/1.5 'JetBrains Mono',monospace;padding:.75rem 1rem;border:1px solid #363c47;border-radius:.75rem;background:#14171ccc;opacity:.4;pointer-events:none;animation:bob 7s ease-in-out infinite alternate}
+  .float-win .k{color:#d9a441}.float-win .s{color:#8fae8b}.float-win .c{color:#9a9ea6}
+  @keyframes bob{to{transform:translateY(-14px)}}
+  .glyph{font-family:'JetBrains Mono',monospace;font-size:1.05rem;padding:.55rem .9rem;border:1px solid #363c47;border-radius:.75rem;background:#14171c;cursor:default;transition:transform .25s cubic-bezier(.3,1.6,.5,1),border-color .2s,color .2s,box-shadow .2s}
+  .glyph:hover{border-color:#d9a441;color:#d9a441}
+  .tilt{transition:transform .15s ease-out;will-change:transform}
+    .flip{perspective:600px;height:96px}.flip>div{position:relative;width:100%;height:100%;transition:transform .55s;transform-style:preserve-3d}
+  .flip:hover>div,.flip:focus-visible>div,.flip.on>div{transform:rotateY(180deg)}
+  .flip i{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.2rem;border:1px solid #262b34;border-radius:.75rem;background:#0d0f12;backface-visibility:hidden;-webkit-backface-visibility:hidden;font-style:normal}
+  .flip i+i{transform:rotateY(180deg);border-color:#d9a44166;background:#2a2113;font:.68rem 'JetBrains Mono',monospace;text-align:center;padding:.4rem}
+  .pg-b{height:2.5rem;border-radius:.5rem;border:1px solid #262b34;background:#0d0f12;color:#9a9ea6;font:.65rem 'JetBrains Mono',monospace;transition:transform .15s}
+  .pg-b.head{border-color:#8fae8b;color:#8fae8b;box-shadow:0 0 0 1px #8fae8b66}.pg-b.used{background:#d9a441;color:#0d0f12;border-color:#d9a441;cursor:pointer}.pg-b.used:hover{transform:scale(.92)}
+  .pg-b.flash{animation:fl .4s}@keyframes fl{from{transform:scale(1.35)}}
+  .now-dot{width:8px;height:8px;border-radius:50%;background:#d9a441;animation:ping 1.8s infinite}@keyframes ping{from{box-shadow:0 0 0 0 #d9a44199}to{box-shadow:0 0 0 10px #d9a44100}}
+  @media (prefers-reduced-motion:reduce){#rain,.float-win,#glow{display:none}.flip>div,.glyph{transition:none}}
+  @media print{#rain,.float-win,#glow{display:none!important}.sec-bg::before{display:none}}
+
+  .fc{perspective:900px;height:var(--h,220px);cursor:pointer;outline:none}
+  .fc>div{position:relative;width:100%;height:100%;transition:transform .6s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d}
+  .fc.on>div{transform:rotateY(180deg)}
+  .fc-f,.fc-b{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+  .fc-b{transform:rotateY(180deg);background:#1b1f26;border-color:#d9a44155}
+  .fc:focus-visible .fc-f{outline:2px solid #d9a441;outline-offset:3px}
+  .fc-hint{color:#9a9ea6;font-size:1.1rem;transition:transform .4s,color .2s}.fc:hover .fc-hint{color:#d9a441;transform:rotate(-90deg)}
+  @media (prefers-reduced-motion:reduce){.fc>div{transition:none}}
+  @media print{.fc{height:auto!important}.fc>div{transform:none!important}.fc-f,.fc-b{position:static!important;transform:none!important;backface-visibility:visible!important}.fc-b{margin-top:.5rem}}
+</style>
+</head>
+<body class="font-sans antialiased">
+<div id="progress" class="no-print"></div>
+
+<!-- NAV -->
+<header class="no-print fixed top-0 inset-x-0 z-40 border-b border-ink-700/70 bg-ink-950/80 backdrop-blur">
+  <nav class="max-w-6xl mx-auto px-5 h-14 flex items-center justify-between">
+    <a href="#top" class="font-display font-semibold tracking-tight">P. Anuraag Christopher<span class="text-amber">.</span></a>
+    <div class="hidden md:flex gap-6 text-sm text-ash">
+      <a href="#about" class="nav-link hover:text-bone">About</a>
+      <a href="#projects" class="nav-link hover:text-bone">Projects</a>
+      <a href="#roadmap" class="nav-link hover:text-bone">Roadmap</a>
+      <a href="#awards" class="nav-link hover:text-bone">Awards</a>
+      <a href="#publications" class="nav-link hover:text-bone">Publications</a>
+      <a href="#events" class="nav-link hover:text-bone">Events</a>
+      <a href="#contact" class="nav-link hover:text-bone">Contact</a>
+    </div>
+
+  </nav>
+</header>
+
+<main id="top">
+<!-- HERO -->
+<section class="grid-bg hero relative overflow-hidden pt-28 pb-16 md:pt-36">
+  <canvas id="rain" aria-hidden="true"></canvas>
+  <div class="float-win hidden lg:block" data-d="14" style="left:3%;bottom:2rem" aria-hidden="true"><span class="c">// accept loop</span>
+<span class="k">while</span> (true) {
+  <span class="k">int</span> c = <span class="s">accept</span>(fd);
+  <span class="s">handle</span>(c);
+}</div>
+  <div class="float-win hidden lg:block" data-d="22" style="left:46%;top:5.5rem" aria-hidden="true"><span class="s">listen</span>(fd, <span class="k">128</span>);
+<span class="c">// 0.0.0.0:8080</span></div>
+  <div class="max-w-6xl mx-auto px-5 grid md:grid-cols-5 gap-6">
+    <div class="md:col-span-3 flex flex-col justify-center reveal">
+      <p class="label mb-4">// portfolio · v1.0 · 2026</p>
+      <h1 class="font-display text-5xl md:text-7xl font-bold leading-[0.95] tracking-tight">P. Anuraag<br/>Christopher</h1>
+      <p class="mt-5 text-lg text-ash">First-Year B.Tech CSE Core Student <span class="text-bone">@ VIT Vellore</span></p>
+      <p class="mt-3 font-mono text-sm text-sage no-print">$ <span id="typed"></span><span class="animate-pulse">▌</span></p>
+      <div class="mt-7 flex flex-wrap gap-3"><span class="glyph">C++</span><span class="glyph">TCP</span><span class="glyph">POSIX</span><span class="glyph">Linux</span><span class="glyph">Git</span></div>
+      <div class="mt-8 flex flex-wrap gap-3 no-print">
+        <a href="#projects" class="bg-bone text-ink-950 font-medium rounded-md px-5 py-2.5 hover:bg-amber transition">View Projects</a>
+        <a href="#contact" class="border border-ink-600 rounded-md px-5 py-2.5 hover:border-amber transition">Get in touch</a>
+      </div>
+    </div>
+    <!-- Media slot -->
+<div class="md:col-span-2 reveal">
+  <div class="tilt bg-slate-900 border border-slate-800 rounded-2xl p-4 h-full shadow-lg">
+    
+    <!-- Card Header & Toggle Buttons -->
+    <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+      <span class="text-xs font-mono font-semibold uppercase tracking-wider text-slate-300">Video Resume / Headshot</span>
+      <div class="flex gap-2 no-print text-xs font-mono">
+        <button onclick="switchMedia('video')" id="btn-video" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white transition-all">Video</button>
+        <button onclick="switchMedia('photo')" id="btn-photo" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white transition-all">Photo</button>
+      </div>
+    </div>
+
+    <!-- Default Placeholder State (Visible on initial page load) -->
+    <div id="media-placeholder" class="aspect-[4/5] rounded-xl bg-slate-950/60 border border-dashed border-slate-800 flex flex-col items-center justify-center text-center p-6">
+      <div class="w-14 h-14 rounded-full border border-sky-500/40 bg-sky-500/10 flex items-center justify-center mb-3 text-sky-400">
+        ▶
+      </div>
+      <p class="text-xs text-slate-400 font-mono">Click <span class="text-white">Video</span> or <span class="text-white">Photo</span> above to load media.</p>
+    </div>
+
+    <!-- Video Resume Container (Hidden by default) -->
+    <div id="media-video" class="hidden aspect-[4/5] rounded-xl bg-slate-950 border border-slate-800 overflow-hidden flex items-center justify-center">
+      <video width="100%" height="100%" controls class="w-full h-full object-cover rounded-lg">
+        <source src="video resume.mp4" type="video/mp4">
+       
+      </video>
+    </div>
+
+    <!-- Photo Container (Hidden by default) -->
+    <div id="media-photo" class="hidden aspect-[4/5] rounded-xl bg-slate-950 border border-slate-800 overflow-hidden flex items-center justify-center">
+      <img src="Photo.jpg" alt="Professional Headshot" class="w-full h-full object-cover rounded-lg">
+    </div>
+
+  </div>
+</div>
+  </div><!-- /hero grid -->
+</section><!-- /hero -->
+
+<!-- Robust Toggle Logic Script -->
+<script>
+  function switchMedia(type) {
+    const videoBox = document.getElementById('media-video');
+    const photoBox = document.getElementById('media-photo');
+    const placeholder = document.getElementById('media-placeholder');
+    const btnVideo = document.getElementById('btn-video');
+    const btnPhoto = document.getElementById('btn-photo');
+    const videoElement = videoBox.querySelector('video');
+
+    // 1. Hide everything first
+    placeholder.classList.add('hidden');
+    videoBox.classList.add('hidden');
+    photoBox.classList.add('hidden');
+    
+    // 2. Reset button styles back to default grey
+    const defaultBtnClass = "px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white transition-all";
+    const activeBtnClass = "px-3 py-1.5 rounded-lg bg-sky-500 text-slate-950 font-semibold transition-all shadow-md";
+
+    btnVideo.className = defaultBtnClass;
+    btnPhoto.className = defaultBtnClass;
+
+    // 3. Show the selected container and highlight its button
+    if (type === 'video') {
+      videoBox.classList.remove('hidden');
+      btnVideo.className = activeBtnClass;
+    } else if (type === 'photo') {
+      photoBox.classList.remove('hidden');
+      btnPhoto.className = activeBtnClass;
+      // Pause video audio if user clicks away to photo
+      if (videoElement) videoElement.pause();
+    }
+  }
+</script>
+<!-- ABOUT BENTO -->
+<section id="about" class="py-16 sec-bg bg-code">
+  <div class="max-w-6xl mx-auto px-5">
+    <p class="label">01 — About & Credentials</p>
+    <h2 class="font-display text-3xl md:text-4xl font-semibold mt-2 mb-8">Built from first principles.</h2>
+    <div class="grid md:grid-cols-6 gap-4">
+      <div class="card p-6 md:col-span-4 reveal">
+        <p class="label mb-3">Bio</p>
+        <p class="text-3xl font-display leading-tight">Systems programmer.</p><div class="flex flex-wrap gap-2 mt-4"><span class="chip">low-level C++</span><span class="chip">memory dynamics</span><span class="chip">POSIX sockets</span></div>
+      </div>
+      <div class="card p-6 md:col-span-2 reveal">
+        <p class="label mb-3">Institution</p>
+        <p class="font-display text-2xl">VIT Vellore</p>
+        <p class="text-ash text-sm mt-1">B.Tech CSE Core · Year 1</p>
+      </div>
+      <div class="card p-6 md:col-span-3 reveal"><p class="label mb-4">Core Skills</p><div class="grid grid-cols-3 sm:grid-cols-5 gap-3"><button class="flip" onclick="this.classList.toggle('on')"><div><i><b class="font-display text-2xl text-amber">{ }</b><span class="text-xs text-ash">C++</span></i><i>STL · Pointers · Memory</i></div></button><button class="flip" onclick="this.classList.toggle('on')"><div><i><b class="font-display text-2xl text-amber">⇄</b><span class="text-xs text-ash">Sockets</span></i><i>TCP · bind/listen/accept</i></div></button><button class="flip" onclick="this.classList.toggle('on')"><div><i><b class="font-display text-2xl text-amber">Py</b><span class="text-xs text-ash">Python</span></i><i>Scripting · Tooling</i></div></button><button class="flip" onclick="this.classList.toggle('on')"><div><i><b class="font-display text-2xl text-amber">$_</b><span class="text-xs text-ash">Linux</span></i><i>Shell · gcc · gdb</i></div></button><button class="flip" onclick="this.classList.toggle('on')"><div><i><b class="font-display text-2xl text-amber">git</b><span class="text-xs text-ash">GitHub</span></i><i>Version control</i></div></button></div></div>
+      <div class="card p-6 md:col-span-3 reveal relative overflow-hidden">
+        <p class="label mb-3">Discipline</p>
+        <p class="font-display text-2xl">Grade 8 Piano Performance</p>
+        <p class="text-ash text-sm mt-1">Trinity College London</p>
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="py-16 border-t border-ink-800 sec-bg bg-circuit">
+  <div class="max-w-6xl mx-auto px-5">
+    <p class="label">02 — Projects Roadmap</p>
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mt-2 mb-8">
+      <h2 class="font-display text-3xl md:text-4xl font-semibold">Code that touches the hardware.</h2>
+      <div role="tablist" class="no-print inline-flex p-1 rounded-lg border border-ink-700 bg-ink-900 text-sm">
+        <button role="tab" data-tab="completed" aria-selected="true" class="tab-btn px-4 py-1.5 rounded-md">Completed</button>
+        <button role="tab" data-tab="planned" aria-selected="false" class="tab-btn px-4 py-1.5 rounded-md">Planned</button>
+      </div>
+    </div>
+
+    <div id="tab-completed" class="tab-panel grid md:grid-cols-3 gap-4" id="project-grid"></div>
+
+    <div id="tab-planned" class="tab-panel hidden">
+      <div class="card p-8 grid md:grid-cols-3 gap-6">
+        <div class="md:col-span-2">
+          <p class="label mb-2">Planned · Next</p>
+          <h3 class="font-display text-2xl font-semibold">Bare C++ Redis Clone</h3>
+          <p class="text-ash mt-3">A from-scratch in-memory key-value store with no external libraries.</p>
+          <div class="flex flex-wrap gap-2 mt-5"><span class="chip">In-memory data structures</span><span class="chip">RESP protocol parsing</span><span class="chip">Custom event loop</span><span class="chip">epoll</span></div>
+        </div>
+        <pre class="font-mono text-xs bg-ink-950 border border-ink-700 rounded-lg p-4 text-ash overflow-x-auto">$ redis-cli -p 6380
+&gt; SET key "hello"
+<span class="text-sage">OK</span>
+&gt; GET key
+<span class="text-sage">"hello"</span></pre>
+      </div>
+    </div>
+
+
+    <!-- PROJECT VIDEO SLOT: edit PROJECT_VIDEO at the top of the <script> at the bottom of this file -->
+    <div id="project-video" class="card no-print mt-6 p-4 md:p-6 reveal">
+      <div class="flex items-center justify-between gap-4 mb-4">
+        <p class="label">Project Walkthrough</p>
+        <span id="pv-caption" class="font-mono text-xs text-ash"></span>
+      </div>
+      <div class="relative aspect-video rounded-xl overflow-hidden border border-ink-700 bg-ink-950">
+        <video id="pv-player" controls preload="metadata" playsinline class="w-full h-full object-contain bg-black">
+          <source src="portfolio%20boosted.mp4" type="video/mp4">
+        </video>
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH & CAREER -->
+<section id="roadmap" class="py-16 border-t border-ink-800 sec-bg bg-hex">
+  <div class="max-w-6xl mx-auto px-5">
+    <p class="label">03 — Research, Patents & Career</p>
+    <h2 class="font-display text-3xl md:text-4xl font-semibold mt-2 mb-8">Where this is heading.</h2>
+    <div class="grid md:grid-cols-3 gap-4"><div class="fc reveal" tabindex="0" role="button" aria-label="Flip card: Planned paper" style="--h:240px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M9 12h7M9 16h7M9 8h3"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Academic Research</p><p class="font-display text-xl leading-snug">Planned paper</p><span class="chip mt-3 self-start">Status · Planning</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-lg leading-snug">Systems architecture and memory allocation optimisation.</p><span class="chip mt-4 self-start">Year 2–3</span></div></div></div><div class="fc reveal" tabindex="0" role="button" aria-label="Flip card: Low-level design" style="--h:240px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Patents</p><p class="font-display text-xl leading-snug">Low-level design</p><span class="chip mt-3 self-start">Open source first</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-lg leading-snug">Focus is entirely on open-source systems engineering.</p></div></div></div><div class="fc reveal" tabindex="0" role="button" aria-label="Flip card: 2–3 targeted roles" style="--h:240px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Internships</p><p class="font-display text-xl leading-snug">2–3 targeted roles</p><span class="chip mt-3 self-start">Target · Cybersecurity</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-lg leading-snug">High-impact cybersecurity companies: secure systems and low-level code.</p><span class="chip mt-4 self-start">Year 2–4</span></div></div></div></div>
+    <div class="card p-6 mt-4 reveal">
+      <p class="label mb-5">Career Timeline</p>
+      <ol class="grid md:grid-cols-4 gap-6 text-sm">
+        <li class="border-t-2 border-amber pt-3"><p class="font-mono text-ash text-xs flex items-center gap-2"><span class="now-dot"></span>NOW</p><p class="mt-1">Core CSE coursework · 3 systems projects shipped</p></li>
+        <li class="border-t-2 border-ink-600 pt-3"><p class="font-mono text-ash text-xs">NEXT SEM</p><p class="mt-1">Redis clone · hackathons & tech fests</p></li>
+        <li class="border-t-2 border-ink-600 pt-3"><p class="font-mono text-ash text-xs">YEAR 2–3</p><p class="mt-1">Research paper on memory allocation</p></li>
+        <li class="border-t-2 border-ink-600 pt-3"><p class="font-mono text-ash text-xs">YEAR 2–4</p><p class="mt-1">2–3 cybersecurity internships</p></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- AWARDS & EVENTS -->
+<section id="awards" class="py-16 border-t border-ink-800 sec-bg bg-code">
+  <div class="max-w-6xl mx-auto px-5">
+    <p class="label">04 — Certificates, Awards & Events</p>
+    <h2 class="font-display text-3xl md:text-4xl font-semibold mt-2 mb-8">Recognition & participation.</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4"><div class="fc reveal" tabindex="0" role="button" aria-label="Flip card: Grade 8 Piano Performance" style="--h:210px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="M9 13.5L7 21l5-3 5 3-2-7.5"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Certificate</p><p class="font-display text-xl leading-snug">Grade 8 Piano Performance</p></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-mono text-xs text-amber mb-2">ISSUED BY</p><p class="font-display text-lg leading-snug">Trinity College London</p></div></div></div><div class="fc reveal" tabindex="0" role="button" aria-label="Flip card: GitHub Student Developer Pack" style="--h:210px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4M14 5l-4 14"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Certificate</p><p class="font-display text-xl leading-snug">GitHub Student Developer Pack</p></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-mono text-xs text-amber mb-2">ISSUED BY</p><p class="font-display text-lg leading-snug">GitHub Education</p></div></div></div><div class="fc reveal" tabindex="0" role="button" aria-label="Flip card: Linux Programming &amp; CTF Workshop" style="--h:210px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M12 15h5"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Event</p><p class="font-display text-xl leading-snug">Linux Programming &amp; CTF Workshop</p></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-mono text-xs text-sage mb-2">STATUS</p><p class="font-display text-lg leading-snug">Participated</p></div></div></div><div class="fc reveal" tabindex="0" role="button" aria-label="Flip card: Tech fests, hackathons &amp; coding challenges" style="--h:210px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Event</p><p class="font-display text-xl leading-snug">Tech fests, hackathons &amp; coding challenges</p></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-mono text-xs text-amber mb-2">STATUS</p><p class="font-display text-lg leading-snug">Planned · next semester</p></div></div></div></div>
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section id="publications" class="py-16 border-t border-ink-800 sec-bg bg-hex">
+  <div class="max-w-6xl mx-auto px-5">
+    <p class="label">05 — Publications</p>
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mt-2 mb-8"><h2 class="font-display text-3xl md:text-4xl font-semibold">Future plans, on paper.</h2><span class="chip self-start">Open access · GitHub-first</span></div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4"><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: Memory Efficiency in Custom Allocators" style="--h:270px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="1"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Research Idea · 01</p><p class="font-display text-lg leading-snug">Memory Efficiency in Custom Allocators</p><span class="chip mt-3 self-start">Status · Planning</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">Benchmark my pool allocator against malloc for speed and fragmentation.</p><span class="chip mt-4 self-start">Target · Year 2–3</span></div></div></div><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: Reverse Engineering Basics" style="--h:270px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="6"/><path d="M15 15l6 6"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Research Idea · 02</p><p class="font-display text-lg leading-snug">Reverse Engineering Basics</p><span class="chip mt-3 self-start">Status · Exploring</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">Teardown notes on small binaries I write myself, using gdb, objdump and Ghidra.</p><span class="chip mt-4 self-start">Tools · gdb · Ghidra</span></div></div></div><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: What Really Happens in accept()" style="--h:270px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h10M4 18h13"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Write-up · 03</p><p class="font-display text-lg leading-snug">What Really Happens in accept()</p><span class="chip mt-3 self-start">Status · Drafting</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">Trace my HTTP server with strace and map every syscall to a line of code.</p><span class="chip mt-4 self-start">Format · Blog + GitHub</span></div></div></div><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: Cache-Friendly Data Structures" style="--h:270px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20V10M9 20V4M15 20v-7M21 20V8"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Research Idea · 04</p><p class="font-display text-lg leading-snug">Cache-Friendly Data Structures</p><span class="chip mt-3 self-start">Status · Reading</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">Compare contiguous vs linked layouts and measure cache misses with perf.</p><span class="chip mt-4 self-start">Tools · perf · g++</span></div></div></div></div>
+    <div class="card p-6 mt-4 reveal"><p class="label mb-5">Publication Pipeline</p><ol class="grid grid-cols-2 md:grid-cols-4 gap-6 text-sm"><li class="border-t-2 border-amber pt-3"><p class="font-mono text-ash text-xs flex items-center gap-2"><span class="now-dot"></span>01 · NOW</p><p class="mt-1">Idea &amp; reading list</p></li><li class="border-t-2 border-ink-600 pt-3"><p class="font-mono text-ash text-xs">02</p><p class="mt-1">Prototype in C++</p></li><li class="border-t-2 border-ink-600 pt-3"><p class="font-mono text-ash text-xs">03</p><p class="mt-1">Benchmark &amp; analyse</p></li><li class="border-t-2 border-ink-600 pt-3"><p class="font-mono text-ash text-xs">04</p><p class="mt-1">Open-source write-up</p></li></ol></div>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section id="events" class="py-16 border-t border-ink-800 sec-bg bg-code">
+  <div class="max-w-6xl mx-auto px-5">
+    <p class="label">06 — Events</p>
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mt-2 mb-8"><h2 class="font-display text-3xl md:text-4xl font-semibold">Organising, not just attending.</h2><span class="chip self-start">Planned · next semester onwards</span></div>
+    <div class="grid md:grid-cols-3 gap-4"><div class="fc reveal md:col-span-2" tabindex="0" role="button" aria-label="Flip card: CodeClash" style="--h:250px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H4v1a4 4 0 0 0 4 4M16 6h4v1a4 4 0 0 1-4 4M12 13v4M9 20h6"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Flagship · Competitive Programming</p><p class="font-display text-3xl leading-snug">CodeClash</p><p class="font-mono text-xs text-sage mt-2">$ ./judge --contest codeclash</p><span class="chip mt-3 self-start">Planning · next semester</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">3-hour ICPC-style contest, 5–6 problems, solo or pairs, with a beginner-friendly division.</p><span class="chip mt-4 self-start">Judge · Codeforces Gym / DOMjudge</span></div></div></div><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: Linux &amp; Git Bootcamp" style="--h:250px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M12 15h5"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Workshop</p><p class="font-display text-lg leading-snug">Linux &amp; Git Bootcamp</p><span class="chip mt-3 self-start">Planned · Hands-on</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">Set up WSL2, learn shell basics and a clean Git workflow in one session.</p><span class="chip mt-4 self-start">Audience · First-years</span></div></div></div><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: Build a Server in C++" style="--h:250px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Live Coding</p><p class="font-display text-lg leading-snug">Build a Server in C++</p><span class="chip mt-3 self-start">Idea stage</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">Write a TCP echo server from scratch with live Q&amp;A on each syscall.</p><span class="chip mt-4 self-start">Level · Beginner</span></div></div></div><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: Beginner CTF Night" style="--h:250px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Mini CTF</p><p class="font-display text-lg leading-snug">Beginner CTF Night</p><span class="chip mt-3 self-start">Idea stage</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">Easy Linux and binary puzzles with hints, so first-years can try a CTF safely.</p><span class="chip mt-4 self-start">Format · Teams of 2–3</span></div></div></div><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: Systems Study Circle" style="--h:250px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="3"/><circle cx="17" cy="10" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 20c0-2.2 1.3-4 3.5-4S21 17.8 21 20"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Study Group</p><p class="font-display text-lg leading-snug">Systems Study Circle</p><span class="chip mt-3 self-start">Planned · Weekly</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">A small reading group for C++, OS concepts and networking, one topic per meet.</p><span class="chip mt-4 self-start">Audience · Open to all years</span></div></div></div></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="py-16 border-t border-ink-800 sec-bg bg-circuit">
+  <div class="max-w-6xl mx-auto px-5">
+    <p class="label">07 — Contact</p>
+    <h2 class="font-display text-3xl md:text-4xl font-semibold mt-2 mb-8">Let's build something low-level.</h2>
+    <div class="grid md:grid-cols-4 gap-4">
+      <a href="mailto:anuraagchris4468@gmail.com" class="card p-6 md:col-span-2 block"><p class="label mb-2">Email</p><p class="font-display text-lg md:text-xl break-all">anuraagchris4468@gmail.com</p></a>
+      <a href="tel:+91959794468" class="card p-6 block"><p class="label mb-2">Phone</p><p class="font-display text-lg">+91 95979 44468</p></a>
+      <div class="card p-6"><p class="label mb-2">Institution</p><p class="font-display text-lg">VIT Vellore</p></div>
+      <a href="https://github.com/Anuraag4468" target="_blank" rel="noopener" class="card p-6 md:col-span-2 flex justify-between items-center"><div><p class="label mb-2">GitHub</p><p class="font-display text-lg">github.com/Anuraag4468</p></div><span class="text-2xl text-amber no-print">↗</span></a>
+      <a href="https://www.linkedin.com/search/results/all/?keywords=P.%20Anuraag%20Christopher" target="_blank" rel="noopener" class="card p-6 md:col-span-2 flex justify-between items-center"><div><p class="label mb-2">LinkedIn</p><p class="font-display text-lg">P. Anuraag Christopher</p></div><span class="text-2xl text-amber no-print">↗</span></a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="border-t border-ink-800 py-8 text-center text-xs font-mono text-ash">© 2026 P. Anuraag Christopher.</footer>
+<button id="to-top" aria-label="Back to top" class="no-print fixed bottom-5 right-5 z-40 w-10 h-10 rounded-full border border-ink-600 bg-ink-900/90 hover:border-amber hover:text-amber transition opacity-0 pointer-events-none">↑</button>
+
+<!-- MODAL -->
+<dialog id="modal" class="no-print bg-ink-900 text-bone border border-ink-700 rounded-2xl p-0 w-[min(720px,92vw)] max-h-[88vh]">
+  <div class="p-6 md:p-8">
+    <div class="flex justify-between items-start gap-4">
+      <div><p class="label" id="m-tag"></p><h3 id="m-title" class="font-display text-2xl md:text-3xl font-semibold mt-1"></h3></div>
+      <button onclick="modal.close()" class="text-ash hover:text-bone text-2xl leading-none" aria-label="Close">×</button>
+    </div>
+    <div id="m-body" class="mt-6 space-y-5 text-sm leading-relaxed"></div>
+  </div>
+</dialog>
+
+<script>
+// ===== EDIT ME: project video slot =====
+const PROJECT_VIDEO = { src: 'portfolio%20boosted.mp4', poster: '' };
+
+const projects = [
+  { id:'http', tag:'C++ · POSIX · WSL2', title:'Bare-Metal HTTP Web Server', short:'A dependency-free HTTP/1.1 server built directly on POSIX sockets.',
+    problem:'Understand what frameworks hide: how bytes on a TCP connection become an HTTP response.',
+    arch:['socket() → bind() → listen() → accept() loop on a TCP port','Manual request-line and header parsing from raw buffers','Static file serving with MIME-type mapping and status codes','Developed and tested on Linux via WSL2'],
+    learn:'File descriptors, blocking I/O, the TCP lifecycle and why robust parsing matters.',
+    code:'int fd = socket(AF_INET, SOCK_STREAM, 0);\nbind(fd, (sockaddr*)&addr, sizeof addr);\nlisten(fd, SOMAXCONN);\nwhile (true) {\n  int c = accept(fd, nullptr, nullptr);\n  handle(c);  close(c);\n}' },
+  { id:'huff', tag:'Greedy · Min-Heap · Bitwise I/O', title:'Huffman Coding File Compressor', short:'Lossless file compressor using optimal prefix codes.',
+    problem:'Reduce file size losslessly by assigning shorter codes to more frequent bytes.',
+    arch:['Byte-frequency table built in a single pass','Greedy tree construction with std::priority_queue (min-heap)','Recursive code generation into a lookup table','Custom bit-writer packing variable-length codes into bytes'],
+    learn:'Greedy correctness, heap ordering, and bit manipulation for compact serialisation.',
+    code:'while (pq.size() > 1) {\n  Node* a = pq.top(); pq.pop();\n  Node* b = pq.top(); pq.pop();\n  pq.push(new Node(a->f + b->f, a, b));\n}' },
+  { id:'pool', tag:'Memory · Pointers · O(1)', title:'Fixed-Block Memory Pool Allocator', short:'A custom slab allocator with constant-time alloc and free.',
+    problem:'General-purpose malloc is slow and fragments for many same-sized objects.',
+    arch:['Pre-allocated contiguous memory slab split into fixed blocks','Intrusive free-list stored inside unused blocks via pointer casting','O(1) allocate (pop head) and deallocate (push head)','No per-block metadata overhead'],
+    learn:'Alignment, pointer arithmetic, aliasing and cache-friendly layouts.',
+    code:'void* alloc() {\n  if (!head) return nullptr;\n  Block* b = head;\n  head = head->next;\n  return b;\n}\nvoid free(void* p) {\n  auto* b = static_cast<Block*>(p);\n  b->next = head; head = b;\n}' },
+];
+
+const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const VIZ = {
+  http: `<svg viewBox="0 0 240 90" class="w-full h-full"><rect x="10" y="25" width="44" height="40" rx="6" fill="none" stroke="#9a9ea6"/><rect x="186" y="25" width="44" height="40" rx="6" fill="none" stroke="#d9a441"/><path d="M58 38H182M58 52H182" stroke="#363c47" stroke-dasharray="3 4"/><circle r="4" fill="#d9a441"><animateMotion dur="2.4s" repeatCount="indefinite" path="M58 38H182"/></circle><circle r="4" fill="#8fae8b"><animateMotion dur="2.4s" begin="1.2s" repeatCount="indefinite" path="M182 52H58"/></circle><g font-family="monospace" font-size="9" text-anchor="middle" fill="#9a9ea6"><text x="32" y="49">curl</text><text x="208" y="49" fill="#d9a441">:8080</text></g></svg>`,
+  huff: `<svg viewBox="0 0 240 90" class="w-full h-full" stroke="#363c47" stroke-width="1.5"><g stroke-dasharray="50"><path d="M120 18L80 46M120 18L160 46M80 46L56 74M80 46L104 74"><animate attributeName="stroke-dashoffset" from="50" to="0" dur="1.4s" fill="freeze"/></path></g><g font-family="monospace" font-size="8" fill="#9a9ea6" stroke="none"><text x="92" y="28">0</text><text x="146" y="28">1</text><text x="58" y="56">0</text><text x="96" y="56">1</text></g><g stroke="none"><circle cx="120" cy="18" r="6" fill="#d9a441"><animate attributeName="r" values="6;8;6" dur="2s" repeatCount="indefinite"/></circle><circle cx="80" cy="46" r="5" fill="#8fae8b"/><circle cx="160" cy="46" r="5" fill="#8fae8b"/><circle cx="56" cy="74" r="4" fill="#9a9ea6"/><circle cx="104" cy="74" r="4" fill="#9a9ea6"/></g></svg>`,
+  pool: `<svg viewBox="0 0 240 90" class="w-full h-full">` + Array.from({length:30}, (_, i) => `<rect x="${(i%10)*22+10}" y="${Math.floor(i/10)*26+8}" width="18" height="20" rx="3" fill="#d9a441"><animate attributeName="opacity" values=".12;.95;.12" dur="3s" begin="${((i*7)%11)*.27}s" repeatCount="indefinite"/></rect>`).join('') + `</svg>`
+};
+const grid = document.getElementById('tab-completed');
+grid.innerHTML = projects.map((p,i) => `
+  <article class="card p-6 flex flex-col reveal">
+    <div class="flex justify-between"><span class="font-mono text-xs text-ash">0${i+1}</span><span class="chip">Completed</span></div>
+    <div class="h-24 mt-4 rounded-lg bg-ink-950 border border-ink-700 overflow-hidden">${VIZ[p.id]}</div>
+    <h3 class="font-display text-xl font-semibold mt-4">${p.title}</h3>
+    <div class="flex-1"></div>
+    <p class="label mt-5 normal-case tracking-normal">${p.tag}</p>
+    <button data-open="${p.id}" class="no-print mt-5 text-sm border border-ink-600 hover:border-amber hover:text-amber rounded-md py-2 transition">Read case study →</button>
+  </article>`).join('');
+
+const modal = document.getElementById('modal');
+document.addEventListener('click', e => {
+  const id = e.target.closest('[data-open]')?.dataset.open;
+  if (!id) return;
+  const p = projects.find(x => x.id === id);
+  document.getElementById('m-tag').textContent = p.tag;
+  document.getElementById('m-title').textContent = p.title;
+  document.getElementById('m-body').innerHTML = `
+    <div><p class="label mb-1">Problem</p><p>${p.problem}</p></div>
+    <div><p class="label mb-2">Architecture</p><ul class="space-y-1.5">${p.arch.map(a=>`<li class="flex gap-2"><span class="text-amber">▸</span>${a}</li>`).join('')}</ul></div>
+    <div><div class="flex justify-between items-center mb-2"><p class="label">Core Snippet</p><button data-copy class="font-mono text-xs text-ash hover:text-amber">Copy</button></div><pre class="font-mono text-xs bg-ink-950 border border-ink-700 rounded-lg p-4 overflow-x-auto text-sage">${esc(p.code)}</pre></div>
+    <div><p class="label mb-1">Key Learnings</p><p>${p.learn}</p></div>`;
+  modal.showModal();
+});
+modal.addEventListener('click', e => { if (e.target === modal) modal.close(); });
+
+document.querySelectorAll('.tab-btn').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.tab-btn').forEach(x => x.setAttribute('aria-selected', x===b));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('hidden', p.id !== 'tab-'+b.dataset.tab));
+}));
+
+document.querySelectorAll('.media-btn').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.media-btn').forEach(x => x.classList.toggle('bg-ink-700', x===b));
+  document.getElementById('media-video').classList.toggle('hidden', b.dataset.media!=='video');
+  document.getElementById('media-photo').classList.toggle('hidden', b.dataset.media!=='photo');
+}));
+
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  e.target.classList.add('in');
+  setTimeout(() => e.target.style.transitionDelay = '', 1000);
+}), { threshold:.1 });
+document.querySelectorAll('.reveal').forEach((el,i) => { el.style.transitionDelay = (i%3)*90 + 'ms'; io.observe(el); });
+
+// project video slot
+(function () {
+  const v = document.getElementById('pv-player'), fb = document.getElementById('pv-fallback');
+  document.getElementById('pv-caption').textContent = PROJECT_VIDEO.caption;
+  const showFb = () => { v.classList.add('hidden'); fb.classList.remove('hidden'); fb.classList.add('flex'); };
+  if (!PROJECT_VIDEO.src) return showFb();
+  if (PROJECT_VIDEO.poster) v.poster = PROJECT_VIDEO.poster;
+  v.addEventListener('error', showFb);
+  v.src = PROJECT_VIDEO.src;
+})();
+
+// scroll progress + back-to-top
+const bar = document.getElementById('progress'), toTop = document.getElementById('to-top');
+addEventListener('scroll', () => {
+  const h = document.documentElement;
+  bar.style.width = (h.scrollTop / ((h.scrollHeight - h.clientHeight) || 1) * 100) + '%';
+  const show = h.scrollTop > 600;
+  toTop.classList.toggle('opacity-0', !show); toTop.classList.toggle('pointer-events-none', !show);
+}, { passive:true });
+toTop.onclick = () => scrollTo({ top:0, behavior:'smooth' });
+
+// active nav link
+const navLinks = [...document.querySelectorAll('.nav-link')];
+const spy = new IntersectionObserver(es => es.forEach(e => e.isIntersecting &&
+  navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id))), { rootMargin:'-45% 0px -50% 0px' });
+document.querySelectorAll('main section[id]').forEach(sec => spy.observe(sec));
+
+// hero typewriter
+const words = ['low-level C++', 'POSIX sockets', 'memory allocators', 'TCP from scratch'];
+const typed = document.getElementById('typed');
+let wi = 0, ci = 0, del = false;
+(function tick() {
+  const w = words[wi]; ci += del ? -1 : 1; typed.textContent = w.slice(0, ci);
+  let d = del ? 40 : 80;
+  if (!del && ci === w.length) { del = true; d = 1400; }
+  else if (del && ci === 0) { del = false; wi = (wi + 1) % words.length; d = 300; }
+  setTimeout(tick, d);
+})();
+
+// card spotlight follows the mouse
+document.addEventListener('mousemove', e => {
+  const c = e.target.closest('.card'); if (!c) return;
+  const r = c.getBoundingClientRect();
+  c.style.setProperty('--mx', (e.clientX - r.left) + 'px'); c.style.setProperty('--my', (e.clientY - r.top) + 'px');
+});
+
+// copy code snippet in modal
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-copy]'); if (!b) return;
+  navigator.clipboard.writeText(b.closest('#m-body').querySelector('pre').textContent)
+    .then(() => { b.textContent = 'Copied ✓'; setTimeout(() => b.textContent = 'Copy', 1500); });
+});
+/* ===== visual flair ===== */
+const REDUCE = matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+// code rain in the hero; columns near the cursor brighten and speed up
+(function () {
+  const hero = document.querySelector('.hero'), cv = document.getElementById('rain'); if (REDUCE || !cv) return;
+  const ctx = cv.getContext('2d'), G = '01{}<>/;*&=+#:', fs = 16; let W, H, cols, drops, mx = -999, my = -999, vis = true, last = 0;
+  function size() { W = cv.width = hero.clientWidth; H = cv.height = hero.clientHeight; cols = Math.ceil(W / fs); drops = Array.from({ length: cols }, () => Math.random() * -40); }
+  size(); addEventListener('resize', size);
+  hero.addEventListener('mousemove', e => { const r = hero.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top; });
+  hero.addEventListener('mouseleave', () => { mx = my = -999; });
+  new IntersectionObserver(e => { vis = e[0].isIntersecting; }).observe(hero);
+  const wins = [...document.querySelectorAll('.float-win')];
+  hero.addEventListener('mousemove', e => { const x = e.clientX / innerWidth - .5, y = e.clientY / innerHeight - .5; wins.forEach(w => w.style.translate = (-x * w.dataset.d) + 'px ' + (-y * w.dataset.d) + 'px'); });
+  function frame(t) {
+    requestAnimationFrame(frame); if (!vis || t - last < 60) return; last = t;
+    ctx.globalCompositeOperation = 'destination-out'; ctx.fillStyle = 'rgba(0,0,0,.14)'; ctx.fillRect(0, 0, W, H);
+    ctx.globalCompositeOperation = 'source-over'; ctx.font = fs + 'px monospace';
+    for (let i = 0; i < cols; i++) {
+      const x = i * fs, y = drops[i] * fs, near = Math.hypot(x - mx, y - my) < 130;
+      ctx.fillStyle = near ? '#ffd37a' : (i % 5 ? '#8fae8b' : '#d9a441');
+      ctx.fillText(G[Math.random() * G.length | 0], x, y);
+      drops[i] += near ? 2 : 1; if (y > H && Math.random() > .96) drops[i] = 0;
+    }
+  }
+  requestAnimationFrame(frame);
+})();
+
+// 3D tilt on the media card
+document.querySelectorAll('.tilt').forEach(t => {
+  if (REDUCE) return; const p = t.parentElement;
+  p.addEventListener('mousemove', e => { const r = p.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5; t.style.transform = `perspective(900px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg)`; });
+  p.addEventListener('mouseleave', () => t.style.transform = '');
+});
+
+// section backgrounds drift as you scroll
+const secs = [...document.querySelectorAll('.sec-bg')];
+if (!REDUCE) addEventListener('scroll', () => secs.forEach(s => s.style.setProperty('--py', (s.getBoundingClientRect().top * -.15).toFixed(1))), { passive: true });
+
+// flip cards: click, tap, or Enter/Space
+document.addEventListener('click', e => { const c = e.target.closest('.fc'); if (c) c.classList.toggle('on'); });
+document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('fc')) { e.preventDefault(); e.target.classList.toggle('on'); } });
+
+// allocator playground: alloc pops the free-list head, clicking a used block frees it back onto the head
+(function () {
+  const N = 24, g = document.getElementById('pg-grid'), ch = document.getElementById('pg-chain'), hx = i => i.toString(16).padStart(2, '0'); let free, used;
+  function draw(flash) {
+    g.innerHTML = '';
+    for (let i = 0; i < N; i++) {
+      const b = document.createElement('button'), u = used.has(i);
+      b.className = 'pg-b ' + (u ? 'used' : (i === free[0] ? 'head' : '')); b.textContent = hx(i); if (u) { b.title = 'free()'; b.onclick = () => { used.delete(i); free.unshift(i); draw(i); }; }
+      if (i === flash) b.classList.add('flash'); g.appendChild(b);
+    }
+    ch.textContent = 'head → ' + (free.slice(0, 6).map(hx).join(' → ') || 'NULL') + (free.length > 6 ? ' → …' : '');
+  }
+  function reset() { free = [...Array(N).keys()]; used = new Set(); draw(); }
+  document.getElementById('pg-alloc').onclick = e => {
+    if (!free.length) { e.target.animate([{ translate: '-4px' }, { translate: '4px' }, { translate: '0' }], { duration: 200, iterations: 2 }); return; }
+    const i = free.shift(); used.add(i); draw(i);
+  };
+  document.getElementById('pg-reset').onclick = reset; reset();
+})();
+</script>
+</body>
+</html>
