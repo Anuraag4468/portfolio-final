@@ -34,7 +34,6 @@ tailwind.config = {
   .card { background:#14171c; border:1px solid #262b34; border-radius:1rem; transition:border-color .25s, transform .25s; }
   .card:hover { border-color:#d9a44166; }
   .label { font-family:'JetBrains Mono',monospace; font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:#d9a441; }
-  .tab-btn[aria-selected="true"] { background:#e9e6df; color:#0d0f12; }
   .reveal { opacity:0; transform:translateY(16px); transition:all .7s ease; }
   .reveal.in { opacity:1; transform:none; }
   dialog::backdrop { background:#000c; backdrop-filter: blur(4px); }
@@ -77,9 +76,6 @@ tailwind.config = {
   .flip:hover>div,.flip:focus-visible>div,.flip.on>div{transform:rotateY(180deg)}
   .flip i{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.2rem;border:1px solid #262b34;border-radius:.75rem;background:#0d0f12;backface-visibility:hidden;-webkit-backface-visibility:hidden;font-style:normal}
   .flip i+i{transform:rotateY(180deg);border-color:#d9a44166;background:#2a2113;font:.68rem 'JetBrains Mono',monospace;text-align:center;padding:.4rem}
-  .pg-b{height:2.5rem;border-radius:.5rem;border:1px solid #262b34;background:#0d0f12;color:#9a9ea6;font:.65rem 'JetBrains Mono',monospace;transition:transform .15s}
-  .pg-b.head{border-color:#8fae8b;color:#8fae8b;box-shadow:0 0 0 1px #8fae8b66}.pg-b.used{background:#d9a441;color:#0d0f12;border-color:#d9a441;cursor:pointer}.pg-b.used:hover{transform:scale(.92)}
-  .pg-b.flash{animation:fl .4s}@keyframes fl{from{transform:scale(1.35)}}
   .now-dot{width:8px;height:8px;border-radius:50%;background:#d9a441;animation:ping 1.8s infinite}@keyframes ping{from{box-shadow:0 0 0 0 #d9a44199}to{box-shadow:0 0 0 10px #d9a44100}}
   @media (prefers-reduced-motion:reduce){#rain,.float-win,#glow{display:none}.flip>div,.glyph{transition:none}}
   @media print{#rain,.float-win,#glow{display:none!important}.sec-bg::before{display:none}}
@@ -93,6 +89,22 @@ tailwind.config = {
   .fc-hint{color:#9a9ea6;font-size:1.1rem;transition:transform .4s,color .2s}.fc:hover .fc-hint{color:#d9a441;transform:rotate(-90deg)}
   @media (prefers-reduced-motion:reduce){.fc>div{transition:none}}
   @media print{.fc{height:auto!important}.fc>div{transform:none!important}.fc-f,.fc-b{position:static!important;transform:none!important;backface-visibility:visible!important}.fc-b{margin-top:.5rem}}
+
+
+  html{scroll-behavior:smooth;scroll-padding-top:4rem}
+  .portrait-glow{position:absolute;inset:6% -8% -8% 8%;border-radius:2.5rem;background:radial-gradient(65% 60% at 50% 40%,#d9a44140,transparent 72%);filter:blur(30px)}
+  .portrait-frame{border-radius:2rem;background:linear-gradient(160deg,#1b1f26,#0d0f12);box-shadow:0 24px 60px -24px #000d,inset 0 0 0 1px #ffffff14}
+  .portrait-initials{color:#2a303a}
+  .vn.playing{border-color:#d9a44180}
+  .vn.nope .vn-btn{animation:nope .4s}@keyframes nope{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+  .vn-btn{width:44px;height:44px;border-radius:999px;background:#d9a441;color:#0d0f12;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .15s,background .2s}
+  .vn-btn:hover{transform:scale(1.07);background:#e6b556}
+  .vn-btn:focus-visible,.vn-bar:focus-visible{outline:2px solid #e9e6df;outline-offset:3px}
+  .vn-btn .pause{display:none}.vn.playing .vn-btn .play{display:none}.vn.playing .vn-btn .pause{display:block}
+  .vn-bar{-webkit-appearance:none;appearance:none;display:block;width:100%;height:4px;border-radius:999px;margin-top:10px;cursor:pointer;background:linear-gradient(to right,#d9a441 var(--p,0%),#363c47 var(--p,0%))}
+  .vn-bar::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:#e9e6df;border:0}
+  .vn-bar::-moz-range-thumb{width:12px;height:12px;border-radius:50%;background:#e9e6df;border:0}
+  @media print{.vn{display:none!important}}
 </style>
 </head>
 <body class="font-sans antialiased">
@@ -104,11 +116,11 @@ tailwind.config = {
     <a href="#top" class="font-display font-semibold tracking-tight">P. Anuraag Christopher<span class="text-amber">.</span></a>
     <div class="hidden md:flex gap-6 text-sm text-ash">
       <a href="#about" class="nav-link hover:text-bone">About</a>
+      <a href="#academics" class="nav-link hover:text-bone">Academics</a>
+      <a href="#skills" class="nav-link hover:text-bone">Skills</a>
+      <a href="#participated" class="nav-link hover:text-bone">Events</a>
       <a href="#projects" class="nav-link hover:text-bone">Projects</a>
-      <a href="#roadmap" class="nav-link hover:text-bone">Roadmap</a>
-      <a href="#awards" class="nav-link hover:text-bone">Awards</a>
-      <a href="#publications" class="nav-link hover:text-bone">Publications</a>
-      <a href="#events" class="nav-link hover:text-bone">Events</a>
+      <a href="#publications" class="nav-link hover:text-bone">Research</a>
       <a href="#contact" class="nav-link hover:text-bone">Contact</a>
     </div>
 
@@ -139,134 +151,152 @@ tailwind.config = {
       </div>
     </div>
     <!-- Media slot -->
-<div class="md:col-span-2 reveal">
-  <div class="tilt bg-slate-900 border border-slate-800 rounded-2xl p-4 h-full shadow-lg">
-    
-    <!-- Card Header & Toggle Buttons -->
-    <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
-      <span class="text-xs font-mono font-semibold uppercase tracking-wider text-slate-300">Video Resume / Headshot</span>
-      <div class="flex gap-2 no-print text-xs font-mono">
-        <button onclick="switchMedia('video')" id="btn-video" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white transition-all">Video</button>
-        <button onclick="switchMedia('photo')" id="btn-photo" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white transition-all">Photo</button>
-      </div>
+<div class="md:col-span-2 reveal flex items-center justify-center">
+  <figure class="portrait relative w-full max-w-sm mx-auto">
+    <div class="portrait-glow" aria-hidden="true"></div>
+    <div class="portrait-frame relative aspect-[4/5] overflow-hidden">
+      <div class="absolute inset-0 flex items-center justify-center" aria-hidden="true"><span class="font-display text-7xl font-bold portrait-initials">PAC</span></div>
+      <img src="Photo.jpg" alt="Portrait of P. Anuraag Christopher" class="absolute inset-0 w-full h-full object-cover object-top" onerror="this.remove()">
+      <div class="absolute inset-x-0 bottom-0 h-2/5 pointer-events-none" style="background:linear-gradient(to top,#0d0f12cc,transparent)"></div>
+      <figcaption class="absolute left-4 bottom-4 font-mono text-xs px-3 py-1.5 rounded-full" style="background:#0d0f1299;backdrop-filter:blur(8px);border:1px solid #ffffff18">Systems · C++ · Linux</figcaption>
     </div>
-
-    <!-- Default Placeholder State (Visible on initial page load) -->
-    <div id="media-placeholder" class="aspect-[4/5] rounded-xl bg-slate-950/60 border border-dashed border-slate-800 flex flex-col items-center justify-center text-center p-6">
-      <div class="w-14 h-14 rounded-full border border-sky-500/40 bg-sky-500/10 flex items-center justify-center mb-3 text-sky-400">
-        ▶
-      </div>
-      <p class="text-xs text-slate-400 font-mono">Click <span class="text-white">Video</span> or <span class="text-white">Photo</span> above to load media.</p>
-    </div>
-
-    <!-- Video Resume Container (Hidden by default) -->
-    <div id="media-video" class="hidden aspect-[4/5] rounded-xl bg-slate-950 border border-slate-800 overflow-hidden flex items-center justify-center">
-      <video width="100%" height="100%" controls class="w-full h-full object-cover rounded-lg">
-        <source src="video resume.mp4" type="video/mp4">
-       
-      </video>
-    </div>
-
-    <!-- Photo Container (Hidden by default) -->
-    <div id="media-photo" class="hidden aspect-[4/5] rounded-xl bg-slate-950 border border-slate-800 overflow-hidden flex items-center justify-center">
-      <img src="Photo.jpg" alt="Professional Headshot" class="w-full h-full object-cover rounded-lg">
-    </div>
-
-  </div>
+  </figure>
 </div>
   </div><!-- /hero grid -->
 </section><!-- /hero -->
 
-<!-- Robust Toggle Logic Script -->
-<script>
-  function switchMedia(type) {
-    const videoBox = document.getElementById('media-video');
-    const photoBox = document.getElementById('media-photo');
-    const placeholder = document.getElementById('media-placeholder');
-    const btnVideo = document.getElementById('btn-video');
-    const btnPhoto = document.getElementById('btn-photo');
-    const videoElement = videoBox.querySelector('video');
-
-    // 1. Hide everything first
-    placeholder.classList.add('hidden');
-    videoBox.classList.add('hidden');
-    photoBox.classList.add('hidden');
-    
-    // 2. Reset button styles back to default grey
-    const defaultBtnClass = "px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white transition-all";
-    const activeBtnClass = "px-3 py-1.5 rounded-lg bg-sky-500 text-slate-950 font-semibold transition-all shadow-md";
-
-    btnVideo.className = defaultBtnClass;
-    btnPhoto.className = defaultBtnClass;
-
-    // 3. Show the selected container and highlight its button
-    if (type === 'video') {
-      videoBox.classList.remove('hidden');
-      btnVideo.className = activeBtnClass;
-    } else if (type === 'photo') {
-      photoBox.classList.remove('hidden');
-      btnPhoto.className = activeBtnClass;
-      // Pause video audio if user clicks away to photo
-      if (videoElement) videoElement.pause();
-    }
-  }
-</script>
-<!-- ABOUT BENTO -->
 <section id="about" class="py-16 sec-bg bg-code">
   <div class="max-w-6xl mx-auto px-5">
-    <p class="label">01 — About & Credentials</p>
-    <h2 class="font-display text-3xl md:text-4xl font-semibold mt-2 mb-8">Built from first principles.</h2>
+    <p class="label">01 — About Me</p>
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mt-2 mb-8"><h2 class="font-display text-3xl md:text-4xl font-semibold">Built from first principles.</h2></div>
+    <div class="vn card p-4 mb-8 reveal flex items-center gap-4" data-file="Intro.mp3"><button type="button" class="vn-btn" aria-label="Play voice note: About Me"><svg class="play" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg><svg class="pause" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></button><div class="flex-1 min-w-0"><div class="flex items-baseline justify-between gap-3"><p class="text-sm truncate"><span class="label mr-2">Voice Note</span>About Me</p><span class="font-mono text-xs text-ash shrink-0"><span class="vn-cur">0:00</span> / <span class="vn-dur">0:00</span></span></div><input type="range" class="vn-bar" min="0" max="100" step="0.1" value="0" aria-label="Seek: About Me"></div></div>
     <div class="grid md:grid-cols-6 gap-4">
       <div class="card p-6 md:col-span-4 reveal">
-        <p class="label mb-3">Bio</p>
-        <p class="text-3xl font-display leading-tight">Systems programmer.</p><div class="flex flex-wrap gap-2 mt-4"><span class="chip">low-level C++</span><span class="chip">memory dynamics</span><span class="chip">POSIX sockets</span></div>
+        <p class="label mb-3">About Me</p>
+        <p class="text-3xl font-display leading-tight">Systems programmer.</p>
+        <p class="text-ash mt-4 leading-relaxed">I'm a first-year CSE student who likes knowing what happens under the abstraction. Instead of reaching for a framework, I'd rather write the socket loop, the allocator or the compressor myself and see where it breaks.</p>
+        <p class="text-ash mt-3 leading-relaxed">So far that has meant three C++ projects on Linux, each one built to answer a "how does this actually work?" question. Away from the keyboard, Grade 8 piano taught me to practise slowly and deliberately, and I try to code the same way.</p>
+        <div class="flex flex-wrap gap-2 mt-5"><span class="chip">low-level C++</span><span class="chip">memory dynamics</span><span class="chip">POSIX sockets</span></div>
       </div>
       <div class="card p-6 md:col-span-2 reveal">
-        <p class="label mb-3">Institution</p>
-        <p class="font-display text-2xl">VIT Vellore</p>
-        <p class="text-ash text-sm mt-1">B.Tech CSE Core · Year 1</p>
-      </div>
-      <div class="card p-6 md:col-span-3 reveal"><p class="label mb-4">Core Skills</p><div class="grid grid-cols-3 sm:grid-cols-5 gap-3"><button class="flip" onclick="this.classList.toggle('on')"><div><i><b class="font-display text-2xl text-amber">{ }</b><span class="text-xs text-ash">C++</span></i><i>STL · Pointers · Memory</i></div></button><button class="flip" onclick="this.classList.toggle('on')"><div><i><b class="font-display text-2xl text-amber">⇄</b><span class="text-xs text-ash">Sockets</span></i><i>TCP · bind/listen/accept</i></div></button><button class="flip" onclick="this.classList.toggle('on')"><div><i><b class="font-display text-2xl text-amber">Py</b><span class="text-xs text-ash">Python</span></i><i>Scripting · Tooling</i></div></button><button class="flip" onclick="this.classList.toggle('on')"><div><i><b class="font-display text-2xl text-amber">$_</b><span class="text-xs text-ash">Linux</span></i><i>Shell · gcc · gdb</i></div></button><button class="flip" onclick="this.classList.toggle('on')"><div><i><b class="font-display text-2xl text-amber">git</b><span class="text-xs text-ash">GitHub</span></i><i>Version control</i></div></button></div></div>
-      <div class="card p-6 md:col-span-3 reveal relative overflow-hidden">
         <p class="label mb-3">Discipline</p>
         <p class="font-display text-2xl">Grade 8 Piano Performance</p>
         <p class="text-ash text-sm mt-1">Trinity College London</p>
-        
+      </div>
+      <div class="card p-6 md:col-span-3 reveal">
+        <p class="label mb-4">How I Work</p>
+        <ol class="space-y-4">
+          <li class="flex gap-4"><span class="font-mono text-amber text-sm pt-0.5">01</span><div><p class="font-display text-lg leading-snug">Start from first principles</p><p class="text-ash text-sm mt-1">Read the man page, understand the syscall, then write the code.</p></div></li>
+          <li class="flex gap-4"><span class="font-mono text-amber text-sm pt-0.5">02</span><div><p class="font-display text-lg leading-snug">Build small, test often</p><p class="text-ash text-sm mt-1">One micro-part at a time, checked with curl and a browser before moving on.</p></div></li>
+          <li class="flex gap-4"><span class="font-mono text-amber text-sm pt-0.5">03</span><div><p class="font-display text-lg leading-snug">Ship it publicly</p><p class="text-ash text-sm mt-1">Every project goes on GitHub so the work can be read, run and criticised.</p></div></li>
+        </ol>
+      </div>
+      <div class="card p-6 md:col-span-3 reveal flex flex-col">
+        <p class="label mb-4">My Dev Loop</p>
+        <pre class="font-mono text-xs bg-ink-950 border border-ink-700 rounded-lg p-4 text-ash overflow-x-auto flex-1">$ g++ -Wall -g server.cpp -o server
+$ ./server
+<span class="text-sage">listening on :8080</span>
+$ curl -i localhost:8080
+<span class="text-sage">HTTP/1.1 200 OK</span>
+$ gdb ./server</pre>
+        <p class="text-ash text-sm mt-3">Compile, run, poke it with curl, and drop into gdb when it misbehaves.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PROJECTS -->
-<section id="projects" class="py-16 border-t border-ink-800 sec-bg bg-circuit">
+<section id="academics" class="py-16 border-t border-ink-800 sec-bg bg-circuit">
   <div class="max-w-6xl mx-auto px-5">
-    <p class="label">02 — Projects Roadmap</p>
-    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mt-2 mb-8">
-      <h2 class="font-display text-3xl md:text-4xl font-semibold">Code that touches the hardware.</h2>
-      <div role="tablist" class="no-print inline-flex p-1 rounded-lg border border-ink-700 bg-ink-900 text-sm">
-        <button role="tab" data-tab="completed" aria-selected="true" class="tab-btn px-4 py-1.5 rounded-md">Completed</button>
-        <button role="tab" data-tab="planned" aria-selected="false" class="tab-btn px-4 py-1.5 rounded-md">Planned</button>
+    <p class="label">02 — Academic Background</p>
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mt-2 mb-8"><h2 class="font-display text-3xl md:text-4xl font-semibold">From Biology to Computer Science.</h2></div>
+    <div class="vn card p-4 mb-8 reveal flex items-center gap-4" data-file="Academic background.mp3"><button type="button" class="vn-btn" aria-label="Play voice note: Academic Background"><svg class="play" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg><svg class="pause" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></button><div class="flex-1 min-w-0"><div class="flex items-baseline justify-between gap-3"><p class="text-sm truncate"><span class="label mr-2">Voice Note</span>Academic Background</p><span class="font-mono text-xs text-ash shrink-0"><span class="vn-cur">0:00</span> / <span class="vn-dur">0:00</span></span></div><input type="range" class="vn-bar" min="0" max="100" step="0.1" value="0" aria-label="Seek: Academic Background"></div></div>
+    <div class="grid md:grid-cols-3 gap-4">
+      <div class="card p-6 md:col-span-2 reveal">
+        <p class="label mb-3">Summary</p>
+        <p class="text-ash leading-relaxed">I came into engineering from a Biology background and switched to Computer Science, and I'm now in the first year of the B.Tech CSE Core programme at VIT Vellore. Alongside coursework, I teach myself systems programming by building projects in C++ on Linux. My focus areas are memory, operating systems and networking.</p>
+        <div class="flex flex-wrap gap-2 mt-5"><span class="chip">VIT Vellore</span><span class="chip">CSE Core</span><span class="chip">Year 1</span><span class="chip">Ex-Biology</span></div>
+      </div>
+      <div class="card p-6 reveal">
+        <p class="label mb-3">What Carried Over</p>
+        <ul class="space-y-3 text-sm">
+          <li class="flex gap-2"><span class="text-amber">▸</span>Studying a system by taking it apart</li>
+          <li class="flex gap-2"><span class="text-amber">▸</span>Methodical, step-by-step analysis</li>
+          <li class="flex gap-2"><span class="text-amber">▸</span>Questioning assumptions before trusting them</li>
+        </ul>
       </div>
     </div>
+    <div class="card p-6 mt-4 reveal"><p class="label mb-5">My Path</p><ol class="grid md:grid-cols-4 gap-6"><li class="border-t-2 border-ink-600 pt-3"><p class="font-mono text-ash text-xs flex items-center gap-2">SCHOOL</p><p class="font-display text-lg mt-1 leading-snug">Biology</p><p class="text-ash text-sm mt-2 leading-relaxed">Started in the Biology stream, learning to understand a system by taking it apart.</p></li><li class="border-t-2 border-ink-600 pt-3"><p class="font-mono text-ash text-xs flex items-center gap-2">CLASS 12</p><p class="font-display text-lg mt-1 leading-snug">98 in Chemistry</p><p class="text-ash text-sm mt-2 leading-relaxed">Scored 98 in Chemistry by questioning assumptions until the core concepts made sense.</p></li><li class="border-t-2 border-amber pt-3"><p class="font-mono text-ash text-xs flex items-center gap-2">THE SWITCH</p><p class="font-display text-lg mt-1 leading-snug">Computer Science</p><p class="text-ash text-sm mt-2 leading-relaxed">Moved from Biology to computers, drawn to how software really runs: memory, processes and networks.</p></li><li class="border-t-2 border-amber pt-3"><p class="font-mono text-ash text-xs flex items-center gap-2"><span class="now-dot"></span>COLLEGE</p><p class="font-display text-lg mt-1 leading-snug">B.Tech CSE Core</p><p class="text-ash text-sm mt-2 leading-relaxed">First year at VIT Vellore, learning systems programming through C++ projects on Linux.</p></li></ol></div>
+  </div>
+</section>
 
-    <div id="tab-completed" class="tab-panel grid md:grid-cols-3 gap-4" id="project-grid"></div>
-
-    <div id="tab-planned" class="tab-panel hidden">
-      <div class="card p-8 grid md:grid-cols-3 gap-6">
-        <div class="md:col-span-2">
-          <p class="label mb-2">Planned · Next</p>
-          <h3 class="font-display text-2xl font-semibold">Bare C++ Redis Clone</h3>
-          <p class="text-ash mt-3">A from-scratch in-memory key-value store with no external libraries.</p>
-          <div class="flex flex-wrap gap-2 mt-5"><span class="chip">In-memory data structures</span><span class="chip">RESP protocol parsing</span><span class="chip">Custom event loop</span><span class="chip">epoll</span></div>
-        </div>
-        <pre class="font-mono text-xs bg-ink-950 border border-ink-700 rounded-lg p-4 text-ash overflow-x-auto">$ redis-cli -p 6380
-&gt; SET key "hello"
-<span class="text-sage">OK</span>
-&gt; GET key
-<span class="text-sage">"hello"</span></pre>
+<section id="skills" class="py-16 border-t border-ink-800 sec-bg bg-hex">
+  <div class="max-w-6xl mx-auto px-5">
+    <p class="label">03 — Technical Skills</p>
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mt-2 mb-8"><h2 class="font-display text-3xl md:text-4xl font-semibold">What I know, and what is next.</h2></div>
+    <div class="vn card p-4 mb-8 reveal flex items-center gap-4" data-file="Technical Skills.mp3"><button type="button" class="vn-btn" aria-label="Play voice note: Technical Skills"><svg class="play" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg><svg class="pause" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></button><div class="flex-1 min-w-0"><div class="flex items-baseline justify-between gap-3"><p class="text-sm truncate"><span class="label mr-2">Voice Note</span>Technical Skills</p><span class="font-mono text-xs text-ash shrink-0"><span class="vn-cur">0:00</span> / <span class="vn-dur">0:00</span></span></div><input type="range" class="vn-bar" min="0" max="100" step="0.1" value="0" aria-label="Seek: Technical Skills"></div></div>
+    <div class="grid md:grid-cols-3 gap-4">
+      <div class="card p-6 md:col-span-2 reveal"><p class="label mb-4">Possessed</p><div class="grid grid-cols-3 sm:grid-cols-5 gap-3"><button class="flip" onclick="this.classList.toggle('on')"><div><i><b class="font-display text-2xl text-amber">{ }</b><span class="text-xs text-ash">C++</span></i><i>STL · Pointers · Memory</i></div></button><button class="flip" onclick="this.classList.toggle('on')"><div><i><b class="font-display text-2xl text-amber">⇄</b><span class="text-xs text-ash">Sockets</span></i><i>TCP · bind/listen/accept</i></div></button><button class="flip" onclick="this.classList.toggle('on')"><div><i><b class="font-display text-2xl text-amber">Py</b><span class="text-xs text-ash">Python</span></i><i>Scripting · Tooling</i></div></button><button class="flip" onclick="this.classList.toggle('on')"><div><i><b class="font-display text-2xl text-amber">$_</b><span class="text-xs text-ash">Linux</span></i><i>Shell · gcc · gdb</i></div></button><button class="flip" onclick="this.classList.toggle('on')"><div><i><b class="font-display text-2xl text-amber">git</b><span class="text-xs text-ash">GitHub</span></i><i>Student Dev Pack · Version control</i></div></button></div></div>
+      <div class="card p-6 reveal">
+        <p class="label mb-4">To Be Achieved</p>
+        <ul class="space-y-3 text-sm">
+          <li class="flex gap-2"><span class="text-amber">▸</span>Event loops and epoll</li>
+          <li class="flex gap-2"><span class="text-amber">▸</span>RESP protocol parsing</li>
+          <li class="flex gap-2"><span class="text-amber">▸</span>Reverse engineering with gdb and Ghidra</li>
+          <li class="flex gap-2"><span class="text-amber">▸</span>Profiling with perf</li>
+          <li class="flex gap-2"><span class="text-amber">▸</span>Secure systems and cybersecurity basics</li>
+        </ul>
       </div>
     </div>
+    <div class="card p-6 mt-4 reveal"><p class="label mb-4">Toolbox</p><div class="flex flex-wrap gap-2"><span class="chip">g++</span><span class="chip">gdb</span><span class="chip">curl</span><span class="chip">strace</span><span class="chip">WSL2</span><span class="chip">Git</span></div></div>
+  </div>
+</section>
 
+<section id="participated" class="py-16 border-t border-ink-800 sec-bg bg-code">
+  <div class="max-w-6xl mx-auto px-5">
+    <p class="label">04 — Events Participated</p>
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mt-2 mb-8"><h2 class="font-display text-3xl md:text-4xl font-semibold">Learning in the room.</h2></div>
+    <div class="vn card p-4 mb-8 reveal flex items-center gap-4" data-file="Events participated.mp3"><button type="button" class="vn-btn" aria-label="Play voice note: Events Participated"><svg class="play" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg><svg class="pause" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></button><div class="flex-1 min-w-0"><div class="flex items-baseline justify-between gap-3"><p class="text-sm truncate"><span class="label mr-2">Voice Note</span>Events Participated</p><span class="font-mono text-xs text-ash shrink-0"><span class="vn-cur">0:00</span> / <span class="vn-dur">0:00</span></span></div><input type="range" class="vn-bar" min="0" max="100" step="0.1" value="0" aria-label="Seek: Events Participated"></div></div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4"><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: Linux Programming &amp; CTF Workshop" style="--h:220px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M12 15h5"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Workshop</p><p class="font-display text-xl leading-snug">Linux Programming &amp; CTF Workshop</p><span class="chip mt-3 self-start">Status · Participated</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">Hands-on Linux programming and capture-the-flag challenges.</p><span class="chip mt-4 self-start">Topics · Linux · CTF</span></div></div></div><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: Tech fests, hackathons &amp; coding challenges" style="--h:220px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Upcoming</p><p class="font-display text-xl leading-snug">Tech fests, hackathons &amp; coding challenges</p><span class="chip mt-3 self-start">Planned · next semester</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">Teaming up and building under time pressure at college tech fests and hackathons.</p><span class="chip mt-4 self-start">Status · Planned</span></div></div></div></div>
+    <div class="card p-6 mt-4 reveal">
+      <p class="label mb-3">What I Took Away</p>
+      <p class="text-ash text-sm leading-relaxed max-w-3xl">Workshops are where I test my understanding against other people's problems. This one pushed me to look beneath the commands and ask what the operating system is actually doing.</p>
+      <div class="flex flex-wrap gap-2 mt-4"><span class="chip">file descriptors</span><span class="chip">syscalls</span><span class="chip">socket lifecycles</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="organised" class="py-16 border-t border-ink-800 sec-bg bg-circuit">
+  <div class="max-w-6xl mx-auto px-5">
+    <p class="label">05 — Events Organised</p>
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mt-2 mb-8"><h2 class="font-display text-3xl md:text-4xl font-semibold">Organising, not just attending.</h2><span class="chip self-start">Planned · next semester onwards</span></div>
+        <div class="grid md:grid-cols-3 gap-4"><div class="fc reveal md:col-span-2" tabindex="0" role="button" aria-label="Flip card: CodeClash" style="--h:250px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H4v1a4 4 0 0 0 4 4M16 6h4v1a4 4 0 0 1-4 4M12 13v4M9 20h6"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Flagship · Competitive Programming</p><p class="font-display text-3xl leading-snug">CodeClash</p><p class="font-mono text-xs text-sage mt-2">$ ./judge --contest codeclash</p><span class="chip mt-3 self-start">Planning · next semester</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">3-hour ICPC-style contest, 5–6 problems, solo or pairs, with a beginner-friendly division.</p><span class="chip mt-4 self-start">Judge · Codeforces Gym / DOMjudge</span></div></div></div><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: Linux &amp; Git Bootcamp" style="--h:250px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M12 15h5"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Workshop</p><p class="font-display text-lg leading-snug">Linux &amp; Git Bootcamp</p><span class="chip mt-3 self-start">Planned · Hands-on</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">Set up WSL2, learn shell basics and a clean Git workflow in one session.</p><span class="chip mt-4 self-start">Audience · First-years</span></div></div></div><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: Build a Server in C++" style="--h:250px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Live Coding</p><p class="font-display text-lg leading-snug">Build a Server in C++</p><span class="chip mt-3 self-start">Idea stage</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">Write a TCP echo server from scratch with live Q&amp;A on each syscall.</p><span class="chip mt-4 self-start">Level · Beginner</span></div></div></div><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: Beginner CTF Night" style="--h:250px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Mini CTF</p><p class="font-display text-lg leading-snug">Beginner CTF Night</p><span class="chip mt-3 self-start">Idea stage</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">Easy Linux and binary puzzles with hints, so first-years can try a CTF safely.</p><span class="chip mt-4 self-start">Format · Teams of 2–3</span></div></div></div><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: Systems Study Circle" style="--h:250px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="3"/><circle cx="17" cy="10" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 20c0-2.2 1.3-4 3.5-4S21 17.8 21 20"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Study Group</p><p class="font-display text-lg leading-snug">Systems Study Circle</p><span class="chip mt-3 self-start">Planned · Weekly</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">A small reading group for C++, OS concepts and networking, one topic per meet.</p><span class="chip mt-4 self-start">Audience · Open to all years</span></div></div></div></div>
+  </div>
+</section>
+
+<section id="internships" class="py-16 border-t border-ink-800 sec-bg bg-hex">
+  <div class="max-w-6xl mx-auto px-5">
+    <p class="label">06 — Internships Planned</p>
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mt-2 mb-8"><h2 class="font-display text-3xl md:text-4xl font-semibold">Where I want to intern.</h2></div>
+    <div class="vn card p-4 mb-8 reveal flex items-center gap-4" data-file="Internships.mp3"><button type="button" class="vn-btn" aria-label="Play voice note: Internships Planned"><svg class="play" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg><svg class="pause" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></button><div class="flex-1 min-w-0"><div class="flex items-baseline justify-between gap-3"><p class="text-sm truncate"><span class="label mr-2">Voice Note</span>Internships Planned</p><span class="font-mono text-xs text-ash shrink-0"><span class="vn-cur">0:00</span> / <span class="vn-dur">0:00</span></span></div><input type="range" class="vn-bar" min="0" max="100" step="0.1" value="0" aria-label="Seek: Internships Planned"></div></div>
+    <div class="grid md:grid-cols-3 gap-4"><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: 2–3 targeted roles" style="--h:230px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16v11H4zM9 8V5h6v3"/><path d="M4 13h16"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Target</p><p class="font-display text-lg leading-snug">2–3 targeted roles</p><span class="chip mt-3 self-start">Year 2–4</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">Two to three internships across my second to fourth year.</p><span class="chip mt-4 self-start">Status · Planned</span></div></div></div><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: Cybersecurity" style="--h:230px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Focus</p><p class="font-display text-lg leading-snug">Cybersecurity</p><span class="chip mt-3 self-start">Secure systems</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">High-impact cybersecurity companies working on secure systems and low-level code.</p><span class="chip mt-4 self-start">Fit · Systems background</span></div></div></div><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: Projects, CTFs, open source" style="--h:230px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4M14 5l-4 14"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Preparation</p><p class="font-display text-lg leading-snug">Projects, CTFs, open source</p><span class="chip mt-3 self-start">Building the profile</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">Shipped C++ projects, CTF practice and public GitHub work are my preparation.</p><span class="chip mt-4 self-start">Next · Redis clone</span></div></div></div></div>
+    <div class="card p-6 mt-4 reveal"><p class="label mb-4">What I Would Bring</p><div class="flex flex-wrap gap-2"><span class="chip">low-level C++</span><span class="chip">networking fundamentals</span><span class="chip">debugging with gdb</span><span class="chip">CTF practice</span><span class="chip">public GitHub work</span><span class="chip">learns by building</span></div></div>
+    <div class="card p-6 mt-4 reveal">
+      <p class="label mb-5">Career Timeline</p>
+      <ol class="grid md:grid-cols-4 gap-6 text-sm">
+        <li class="border-t-2 border-amber pt-3"><p class="font-mono text-ash text-xs flex items-center gap-2"><span class="now-dot"></span>NOW</p><p class="mt-1">Core CSE coursework · 3 systems projects shipped</p></li>
+        <li class="border-t-2 border-ink-600 pt-3"><p class="font-mono text-ash text-xs">NEXT SEM</p><p class="mt-1">Redis clone · hackathons &amp; tech fests</p></li>
+        <li class="border-t-2 border-ink-600 pt-3"><p class="font-mono text-ash text-xs">YEAR 2–3</p><p class="mt-1">Research paper on memory allocation</p></li>
+        <li class="border-t-2 border-ink-600 pt-3"><p class="font-mono text-ash text-xs">YEAR 2–4</p><p class="mt-1">2–3 cybersecurity internships</p></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="projects" class="py-16 border-t border-ink-800 sec-bg bg-code">
+  <div class="max-w-6xl mx-auto px-5">
+    <p class="label">07 — Projects Completed</p>
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mt-2 mb-8"><h2 class="font-display text-3xl md:text-4xl font-semibold">Code that touches the hardware.</h2></div>
+        <div id="tab-completed" class="grid md:grid-cols-3 gap-4"></div>
 
     <!-- PROJECT VIDEO SLOT: edit PROJECT_VIDEO at the top of the <script> at the bottom of this file -->
     <div id="project-video" class="card no-print mt-6 p-4 md:p-6 reveal">
@@ -278,62 +308,95 @@ tailwind.config = {
         <video id="pv-player" controls preload="metadata" playsinline class="w-full h-full object-contain bg-black">
           <source src="portfolio%20boosted.mp4" type="video/mp4">
         </video>
-        
+        <div id="pv-fallback" class="hidden absolute inset-0 flex-col items-center justify-center text-center p-6">
+          <p class="font-mono text-xs text-ash">Video not found. Place <span class="text-bone">portfolio boosted.mp4</span> in the same folder as index.html.</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- RESEARCH & CAREER -->
-<section id="roadmap" class="py-16 border-t border-ink-800 sec-bg bg-hex">
+<section id="ongoing" class="py-16 border-t border-ink-800 sec-bg bg-circuit">
   <div class="max-w-6xl mx-auto px-5">
-    <p class="label">03 — Research, Patents & Career</p>
-    <h2 class="font-display text-3xl md:text-4xl font-semibold mt-2 mb-8">Where this is heading.</h2>
-    <div class="grid md:grid-cols-3 gap-4"><div class="fc reveal" tabindex="0" role="button" aria-label="Flip card: Planned paper" style="--h:240px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M9 12h7M9 16h7M9 8h3"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Academic Research</p><p class="font-display text-xl leading-snug">Planned paper</p><span class="chip mt-3 self-start">Status · Planning</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-lg leading-snug">Systems architecture and memory allocation optimisation.</p><span class="chip mt-4 self-start">Year 2–3</span></div></div></div><div class="fc reveal" tabindex="0" role="button" aria-label="Flip card: Low-level design" style="--h:240px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Patents</p><p class="font-display text-xl leading-snug">Low-level design</p><span class="chip mt-3 self-start">Open source first</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-lg leading-snug">Focus is entirely on open-source systems engineering.</p></div></div></div><div class="fc reveal" tabindex="0" role="button" aria-label="Flip card: 2–3 targeted roles" style="--h:240px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Internships</p><p class="font-display text-xl leading-snug">2–3 targeted roles</p><span class="chip mt-3 self-start">Target · Cybersecurity</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-lg leading-snug">High-impact cybersecurity companies: secure systems and low-level code.</p><span class="chip mt-4 self-start">Year 2–4</span></div></div></div></div>
-    <div class="card p-6 mt-4 reveal">
-      <p class="label mb-5">Career Timeline</p>
-      <ol class="grid md:grid-cols-4 gap-6 text-sm">
-        <li class="border-t-2 border-amber pt-3"><p class="font-mono text-ash text-xs flex items-center gap-2"><span class="now-dot"></span>NOW</p><p class="mt-1">Core CSE coursework · 3 systems projects shipped</p></li>
-        <li class="border-t-2 border-ink-600 pt-3"><p class="font-mono text-ash text-xs">NEXT SEM</p><p class="mt-1">Redis clone · hackathons & tech fests</p></li>
-        <li class="border-t-2 border-ink-600 pt-3"><p class="font-mono text-ash text-xs">YEAR 2–3</p><p class="mt-1">Research paper on memory allocation</p></li>
-        <li class="border-t-2 border-ink-600 pt-3"><p class="font-mono text-ash text-xs">YEAR 2–4</p><p class="mt-1">2–3 cybersecurity internships</p></li>
-      </ol>
+    <p class="label">08 — Ongoing Projects</p>
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mt-2 mb-8"><h2 class="font-display text-3xl md:text-4xl font-semibold">Still being built.</h2></div>
+        <div class="card p-8 grid md:grid-cols-3 gap-6 reveal">
+      <div class="md:col-span-2">
+        <p class="label mb-2">Ongoing · In progress</p>
+        <h3 class="font-display text-2xl font-semibold">Personal Portfolio Website</h3>
+        <p class="text-ash mt-3">This site: a responsive, dependency-light portfolio that grows alongside my projects, research plans and events.</p>
+        <div class="flex flex-wrap gap-2 mt-5"><span class="chip">HTML</span><span class="chip">Tailwind CSS</span><span class="chip">JavaScript</span></div>
+      </div>
+      <pre class="font-mono text-xs bg-ink-950 border border-ink-700 rounded-lg p-4 text-ash overflow-x-auto"><span class="text-sage">[x]</span> Hero &amp; About
+<span class="text-sage">[x]</span> Projects &amp; case studies
+<span class="text-sage">[x]</span> Events &amp; research plans
+<span class="text-sage">[x]</span> Testimonials
+[ ] Photos &amp; voice notes</pre>
     </div>
   </div>
 </section>
 
-<!-- AWARDS & EVENTS -->
-<section id="awards" class="py-16 border-t border-ink-800 sec-bg bg-code">
+<section id="planned" class="py-16 border-t border-ink-800 sec-bg bg-hex">
   <div class="max-w-6xl mx-auto px-5">
-    <p class="label">04 — Certificates, Awards & Events</p>
-    <h2 class="font-display text-3xl md:text-4xl font-semibold mt-2 mb-8">Recognition & participation.</h2>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4"><div class="fc reveal" tabindex="0" role="button" aria-label="Flip card: Grade 8 Piano Performance" style="--h:210px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="M9 13.5L7 21l5-3 5 3-2-7.5"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Certificate</p><p class="font-display text-xl leading-snug">Grade 8 Piano Performance</p></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-mono text-xs text-amber mb-2">ISSUED BY</p><p class="font-display text-lg leading-snug">Trinity College London</p></div></div></div><div class="fc reveal" tabindex="0" role="button" aria-label="Flip card: GitHub Student Developer Pack" style="--h:210px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4M14 5l-4 14"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Certificate</p><p class="font-display text-xl leading-snug">GitHub Student Developer Pack</p></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-mono text-xs text-amber mb-2">ISSUED BY</p><p class="font-display text-lg leading-snug">GitHub Education</p></div></div></div><div class="fc reveal" tabindex="0" role="button" aria-label="Flip card: Linux Programming &amp; CTF Workshop" style="--h:210px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M12 15h5"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Event</p><p class="font-display text-xl leading-snug">Linux Programming &amp; CTF Workshop</p></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-mono text-xs text-sage mb-2">STATUS</p><p class="font-display text-lg leading-snug">Participated</p></div></div></div><div class="fc reveal" tabindex="0" role="button" aria-label="Flip card: Tech fests, hackathons &amp; coding challenges" style="--h:210px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Event</p><p class="font-display text-xl leading-snug">Tech fests, hackathons &amp; coding challenges</p></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-mono text-xs text-amber mb-2">STATUS</p><p class="font-display text-lg leading-snug">Planned · next semester</p></div></div></div></div>
+    <p class="label">09 — Projects Planned</p>
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mt-2 mb-8"><h2 class="font-display text-3xl md:text-4xl font-semibold">Next on the list.</h2></div>
+        <div class="card p-8 grid md:grid-cols-3 gap-6 reveal">
+      <div class="md:col-span-2">
+        <p class="label mb-2">Planned · Next</p>
+        <h3 class="font-display text-2xl font-semibold">Bare C++ Redis Clone</h3>
+        <p class="text-ash mt-3">A from-scratch in-memory key-value store with no external libraries.</p>
+        <div class="flex flex-wrap gap-2 mt-5"><span class="chip">In-memory data structures</span><span class="chip">RESP protocol parsing</span><span class="chip">Custom event loop</span><span class="chip">epoll</span></div>
+      </div>
+      <pre class="font-mono text-xs bg-ink-950 border border-ink-700 rounded-lg p-4 text-ash overflow-x-auto">$ redis-cli -p 6380
+&gt; SET key "hello"
+<span class="text-sage">OK</span>
+&gt; GET key
+<span class="text-sage">"hello"</span></pre>
+    </div>
+    <div class="card p-6 mt-4 reveal"><p class="label mb-5">Planned Milestones</p><ol class="grid md:grid-cols-4 gap-6"><li class="border-t-2 border-amber pt-3"><p class="font-mono text-ash text-xs">01</p><p class="font-display text-lg mt-1">Key-value store</p><p class="text-ash text-sm mt-1">Hash table with SET, GET and DEL.</p></li><li class="border-t-2 border-ink-600 pt-3"><p class="font-mono text-ash text-xs">02</p><p class="font-display text-lg mt-1">RESP parser</p><p class="text-ash text-sm mt-1">Read commands sent by redis-cli.</p></li><li class="border-t-2 border-ink-600 pt-3"><p class="font-mono text-ash text-xs">03</p><p class="font-display text-lg mt-1">Event loop</p><p class="text-ash text-sm mt-1">epoll to serve many clients at once.</p></li><li class="border-t-2 border-ink-600 pt-3"><p class="font-mono text-ash text-xs">04</p><p class="font-display text-lg mt-1">Compare</p><p class="text-ash text-sm mt-1">Check behaviour against real Redis.</p></li></ol></div>
   </div>
 </section>
 
 <!-- PUBLICATIONS -->
 <section id="publications" class="py-16 border-t border-ink-800 sec-bg bg-hex">
   <div class="max-w-6xl mx-auto px-5">
-    <p class="label">05 — Publications</p>
+    <p class="label">10 — Publications Planned</p>
     <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mt-2 mb-8"><h2 class="font-display text-3xl md:text-4xl font-semibold">Future plans, on paper.</h2><span class="chip self-start">Open access · GitHub-first</span></div>
+    <div class="vn card p-4 mb-8 reveal flex items-center gap-4" data-file="Publications planned.mp3"><button type="button" class="vn-btn" aria-label="Play voice note: Publications Planned"><svg class="play" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg><svg class="pause" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></button><div class="flex-1 min-w-0"><div class="flex items-baseline justify-between gap-3"><p class="text-sm truncate"><span class="label mr-2">Voice Note</span>Publications Planned</p><span class="font-mono text-xs text-ash shrink-0"><span class="vn-cur">0:00</span> / <span class="vn-dur">0:00</span></span></div><input type="range" class="vn-bar" min="0" max="100" step="0.1" value="0" aria-label="Seek: Publications Planned"></div></div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4"><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: Memory Efficiency in Custom Allocators" style="--h:270px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="1"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Research Idea · 01</p><p class="font-display text-lg leading-snug">Memory Efficiency in Custom Allocators</p><span class="chip mt-3 self-start">Status · Planning</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">Benchmark my pool allocator against malloc for speed and fragmentation.</p><span class="chip mt-4 self-start">Target · Year 2–3</span></div></div></div><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: Reverse Engineering Basics" style="--h:270px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="6"/><path d="M15 15l6 6"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Research Idea · 02</p><p class="font-display text-lg leading-snug">Reverse Engineering Basics</p><span class="chip mt-3 self-start">Status · Exploring</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">Teardown notes on small binaries I write myself, using gdb, objdump and Ghidra.</p><span class="chip mt-4 self-start">Tools · gdb · Ghidra</span></div></div></div><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: What Really Happens in accept()" style="--h:270px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h10M4 18h13"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Write-up · 03</p><p class="font-display text-lg leading-snug">What Really Happens in accept()</p><span class="chip mt-3 self-start">Status · Drafting</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">Trace my HTTP server with strace and map every syscall to a line of code.</p><span class="chip mt-4 self-start">Format · Blog + GitHub</span></div></div></div><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: Cache-Friendly Data Structures" style="--h:270px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20V10M9 20V4M15 20v-7M21 20V8"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Research Idea · 04</p><p class="font-display text-lg leading-snug">Cache-Friendly Data Structures</p><span class="chip mt-3 self-start">Status · Reading</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">Compare contiguous vs linked layouts and measure cache misses with perf.</p><span class="chip mt-4 self-start">Tools · perf · g++</span></div></div></div></div>
     <div class="card p-6 mt-4 reveal"><p class="label mb-5">Publication Pipeline</p><ol class="grid grid-cols-2 md:grid-cols-4 gap-6 text-sm"><li class="border-t-2 border-amber pt-3"><p class="font-mono text-ash text-xs flex items-center gap-2"><span class="now-dot"></span>01 · NOW</p><p class="mt-1">Idea &amp; reading list</p></li><li class="border-t-2 border-ink-600 pt-3"><p class="font-mono text-ash text-xs">02</p><p class="mt-1">Prototype in C++</p></li><li class="border-t-2 border-ink-600 pt-3"><p class="font-mono text-ash text-xs">03</p><p class="mt-1">Benchmark &amp; analyse</p></li><li class="border-t-2 border-ink-600 pt-3"><p class="font-mono text-ash text-xs">04</p><p class="mt-1">Open-source write-up</p></li></ol></div>
   </div>
 </section>
 
-<!-- EVENTS -->
-<section id="events" class="py-16 border-t border-ink-800 sec-bg bg-code">
+<section id="patents" class="py-16 border-t border-ink-800 sec-bg bg-code">
   <div class="max-w-6xl mx-auto px-5">
-    <p class="label">06 — Events</p>
-    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mt-2 mb-8"><h2 class="font-display text-3xl md:text-4xl font-semibold">Organising, not just attending.</h2><span class="chip self-start">Planned · next semester onwards</span></div>
-    <div class="grid md:grid-cols-3 gap-4"><div class="fc reveal md:col-span-2" tabindex="0" role="button" aria-label="Flip card: CodeClash" style="--h:250px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H4v1a4 4 0 0 0 4 4M16 6h4v1a4 4 0 0 1-4 4M12 13v4M9 20h6"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Flagship · Competitive Programming</p><p class="font-display text-3xl leading-snug">CodeClash</p><p class="font-mono text-xs text-sage mt-2">$ ./judge --contest codeclash</p><span class="chip mt-3 self-start">Planning · next semester</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">3-hour ICPC-style contest, 5–6 problems, solo or pairs, with a beginner-friendly division.</p><span class="chip mt-4 self-start">Judge · Codeforces Gym / DOMjudge</span></div></div></div><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: Linux &amp; Git Bootcamp" style="--h:250px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M12 15h5"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Workshop</p><p class="font-display text-lg leading-snug">Linux &amp; Git Bootcamp</p><span class="chip mt-3 self-start">Planned · Hands-on</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">Set up WSL2, learn shell basics and a clean Git workflow in one session.</p><span class="chip mt-4 self-start">Audience · First-years</span></div></div></div><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: Build a Server in C++" style="--h:250px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Live Coding</p><p class="font-display text-lg leading-snug">Build a Server in C++</p><span class="chip mt-3 self-start">Idea stage</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">Write a TCP echo server from scratch with live Q&amp;A on each syscall.</p><span class="chip mt-4 self-start">Level · Beginner</span></div></div></div><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: Beginner CTF Night" style="--h:250px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Mini CTF</p><p class="font-display text-lg leading-snug">Beginner CTF Night</p><span class="chip mt-3 self-start">Idea stage</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">Easy Linux and binary puzzles with hints, so first-years can try a CTF safely.</p><span class="chip mt-4 self-start">Format · Teams of 2–3</span></div></div></div><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: Systems Study Circle" style="--h:250px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="3"/><circle cx="17" cy="10" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 20c0-2.2 1.3-4 3.5-4S21 17.8 21 20"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Study Group</p><p class="font-display text-lg leading-snug">Systems Study Circle</p><span class="chip mt-3 self-start">Planned · Weekly</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">A small reading group for C++, OS concepts and networking, one topic per meet.</p><span class="chip mt-4 self-start">Audience · Open to all years</span></div></div></div></div>
+    <p class="label">11 — Patents Planned</p>
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mt-2 mb-8"><h2 class="font-display text-3xl md:text-4xl font-semibold">System information, open source first.</h2><span class="chip self-start">Nothing filed · ideas only</span></div>
+    <div class="vn card p-4 mb-8 reveal flex items-center gap-4" data-file="Patents.mp3"><button type="button" class="vn-btn" aria-label="Play voice note: Patents Planned"><svg class="play" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg><svg class="pause" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></button><div class="flex-1 min-w-0"><div class="flex items-baseline justify-between gap-3"><p class="text-sm truncate"><span class="label mr-2">Voice Note</span>Patents Planned</p><span class="font-mono text-xs text-ash shrink-0"><span class="vn-cur">0:00</span> / <span class="vn-dur">0:00</span></span></div><input type="range" class="vn-bar" min="0" max="100" step="0.1" value="0" aria-label="Seek: Patents Planned"></div></div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4"><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: Memory Fragmentation Profiler" style="--h:260px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="8" rx="1"/><path d="M8 8v8M13 8v8M17 8v8"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Concept · System Info</p><p class="font-display text-lg leading-snug">Memory Fragmentation Profiler</p><span class="chip mt-3 self-start">Status · Concept</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">Read /proc/meminfo and /proc/buddyinfo to show how fragmented system memory is, live.</p><span class="chip mt-4 self-start">Source · /proc</span></div></div></div><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: Lightweight System Info Daemon" style="--h:260px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="12" rx="2"/><path d="M8 20h8M12 16v4M7 12l2-3 2 2 3-4"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Concept · System Info</p><p class="font-display text-lg leading-snug">Lightweight System Info Daemon</p><span class="chip mt-3 self-start">Status · Concept</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">A tiny C++ daemon that samples CPU, memory and process stats from /proc with minimal overhead.</p><span class="chip mt-4 self-start">Lang · C++ · Linux</span></div></div></div><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: Syscall Footprint Mapper" style="--h:260px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V6z"/><path d="M9 12h6M9 9h6M9 15h3"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Concept · Security</p><p class="font-display text-lg leading-snug">Syscall Footprint Mapper</p><span class="chip mt-3 self-start">Status · Concept</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">Use strace output to show which files, sockets and memory a program touches.</p><span class="chip mt-4 self-start">Use · Security audit</span></div></div></div><div class="fc reveal " tabindex="0" role="button" aria-label="Flip card: Pressure-Aware Memory Pool" style="--h:260px"><div><div class="card fc-f p-6 flex flex-col"><div class="flex justify-between items-start"><svg viewBox="0 0 24 24" class="w-9 h-9" fill="none" stroke="#d9a441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V8M10 20V4M16 20v-9M22 20v-5"/><path d="M2 20h20"/></svg><span class="fc-hint no-print" aria-hidden="true">⟲</span></div><p class="label mt-auto mb-2">Concept · Memory</p><p class="font-display text-lg leading-snug">Pressure-Aware Memory Pool</p><span class="chip mt-3 self-start">Status · Concept</span></div><div class="card fc-b p-6 flex flex-col justify-center"><p class="font-display text-base leading-snug">A pool allocator that resizes itself using live memory information from the OS.</p><span class="chip mt-4 self-start">Builds on · Pool allocator</span></div></div></div></div>
+    <div class="grid md:grid-cols-3 gap-4 mt-4">
+      <div class="card p-6 md:col-span-2 reveal"><p class="label mb-3">Approach</p><p class="font-display text-xl leading-snug">Prototype in the open first, then check prior art before any filing.</p>
+      <p class="text-ash text-sm mt-3 leading-relaxed">These are early ideas around reading and using system information. The plan stays open-source first, and a formal patent would only be explored if a prototype proves genuinely new.</p></div>
+      <pre class="card p-6 reveal font-mono text-xs text-ash overflow-x-auto">$ head -3 /proc/meminfo
+<span class="text-sage">MemTotal:     … kB
+MemFree:      … kB
+MemAvailable: … kB</span></pre>
+    </div>
+  </div>
+</section>
+
+<section id="testimony" class="py-16 border-t border-ink-800 sec-bg bg-circuit">
+  <div class="max-w-6xl mx-auto px-5">
+    <p class="label">12 — Testimony</p>
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mt-2 mb-8"><h2 class="font-display text-3xl md:text-4xl font-semibold">What others say.</h2><span class="chip self-start">3 testimonials</span></div>
+        <div class="grid md:grid-cols-3 gap-4"><figure class="card p-6 reveal flex flex-col"><p class="label">Technical &amp; Systems Focus</p><p class="font-display text-5xl text-amber leading-none mt-3" aria-hidden="true">“</p><blockquote class="text-ash text-sm leading-relaxed -mt-1 flex-1">During the workshop, Anuraag stood out for his insistence on understanding what happens under the hood. While most students rely on surface-level commands, he was asking about file descriptors, syscalls, and socket lifecycles. His drive to build systems from first principles in C++ is rare for a first-year student.</blockquote><figcaption class="mt-5 pt-4 border-t border-ink-700"><p class="font-display text-lg">Prasanna Krishnan</p><p class="text-ash text-xs mt-1">Linux Programming &amp; CTF Workshop Organiser</p><span class="chip mt-3 inline-block">Linux Workshop</span></figcaption></figure><figure class="card p-6 reveal flex flex-col"><p class="label">Practice, Discipline &amp; Artistry</p><p class="font-display text-5xl text-amber leading-none mt-3" aria-hidden="true">“</p><blockquote class="text-ash text-sm leading-relaxed -mt-1 flex-1">Mastering Trinity Grade 8 Piano requires immense patience, ear training, and deliberate practice—traits Anuraag brings to everything he touches. Whether tackling complex Chopin études or transcribing anime arrangements by ear, his analytical approach to music reflects the deep focus and discipline of a true craftsman.</blockquote><figcaption class="mt-5 pt-4 border-t border-ink-700"><p class="font-display text-lg">Abhinand</p><p class="text-ash text-xs mt-1">Piano Educator</p><span class="chip mt-3 inline-block">Piano Teacher</span></figcaption></figure><figure class="card p-6 reveal flex flex-col"><p class="label">Academic Rigor &amp; Work Ethic</p><p class="font-display text-5xl text-amber leading-none mt-3" aria-hidden="true">“</p><blockquote class="text-ash text-sm leading-relaxed -mt-1 flex-1">Anuraag demonstrated outstanding academic rigor and analytical precision in Class 12, scoring an exceptional 98 in Chemistry. He approaches complex topics methodically, questioning assumptions until he understands the underlying core concepts. That dedication and intellectual curiosity will serve him well in engineering.</blockquote><figcaption class="mt-5 pt-4 border-t border-ink-700"><p class="font-display text-lg">Samuel John</p><p class="text-ash text-xs mt-1">Class 12 Chemistry Faculty</p><span class="chip mt-3 inline-block">Class 12 Chemistry Teacher</span></figcaption></figure></div>
   </div>
 </section>
 
 <!-- CONTACT -->
 <section id="contact" class="py-16 border-t border-ink-800 sec-bg bg-circuit">
   <div class="max-w-6xl mx-auto px-5">
-    <p class="label">07 — Contact</p>
+    <p class="label">13 — Contact</p>
     <h2 class="font-display text-3xl md:text-4xl font-semibold mt-2 mb-8">Let's build something low-level.</h2>
     <div class="grid md:grid-cols-4 gap-4">
       <a href="mailto:anuraagchris4468@gmail.com" class="card p-6 md:col-span-2 block"><p class="label mb-2">Email</p><p class="font-display text-lg md:text-xl break-all">anuraagchris4468@gmail.com</p></a>
@@ -346,7 +409,12 @@ tailwind.config = {
 </section>
 </main>
 
-<footer class="border-t border-ink-800 py-8 text-center text-xs font-mono text-ash">© 2026 P. Anuraag Christopher.</footer>
+<footer class="border-t border-ink-800 py-10 text-xs font-mono text-ash">
+  <div class="max-w-6xl mx-auto px-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <p>© 2026 P. Anuraag Christopher · Built with HTML, Tailwind and vanilla JavaScript.</p>
+    <nav class="no-print flex flex-wrap gap-x-5 gap-y-2" aria-label="Footer"><a href="#about" class="hover:text-bone">About</a><a href="#academics" class="hover:text-bone">Academics</a><a href="#projects" class="hover:text-bone">Projects</a><a href="#publications" class="hover:text-bone">Research</a><a href="#testimony" class="hover:text-bone">Testimony</a><a href="#contact" class="hover:text-bone">Contact</a></nav>
+  </div>
+</footer>
 <button id="to-top" aria-label="Back to top" class="no-print fixed bottom-5 right-5 z-40 w-10 h-10 rounded-full border border-ink-600 bg-ink-900/90 hover:border-amber hover:text-amber transition opacity-0 pointer-events-none">↑</button>
 
 <!-- MODAL -->
@@ -362,7 +430,7 @@ tailwind.config = {
 
 <script>
 // ===== EDIT ME: project video slot =====
-const PROJECT_VIDEO = { src: 'portfolio%20boosted.mp4', poster: '' };
+const PROJECT_VIDEO = { src: 'portfolio%20boosted.mp4', poster: '', caption: 'Demo reel · systems projects' };
 
 const projects = [
   { id:'http', tag:'C++ · POSIX · WSL2', title:'Bare-Metal HTTP Web Server', short:'A dependency-free HTTP/1.1 server built directly on POSIX sockets.',
@@ -415,16 +483,7 @@ document.addEventListener('click', e => {
 });
 modal.addEventListener('click', e => { if (e.target === modal) modal.close(); });
 
-document.querySelectorAll('.tab-btn').forEach(b => b.addEventListener('click', () => {
-  document.querySelectorAll('.tab-btn').forEach(x => x.setAttribute('aria-selected', x===b));
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('hidden', p.id !== 'tab-'+b.dataset.tab));
-}));
 
-document.querySelectorAll('.media-btn').forEach(b => b.addEventListener('click', () => {
-  document.querySelectorAll('.media-btn').forEach(x => x.classList.toggle('bg-ink-700', x===b));
-  document.getElementById('media-video').classList.toggle('hidden', b.dataset.media!=='video');
-  document.getElementById('media-photo').classList.toggle('hidden', b.dataset.media!=='photo');
-}));
 
 const io = new IntersectionObserver(es => es.forEach(e => {
   if (!e.isIntersecting) return;
@@ -485,6 +544,46 @@ document.addEventListener('click', e => {
   navigator.clipboard.writeText(b.closest('#m-body').querySelector('pre').textContent)
     .then(() => { b.textContent = 'Copied ✓'; setTimeout(() => b.textContent = 'Copy', 1500); });
 });
+
+
+
+// voice notes: custom players that look for the audio file in a few likely places
+(() => {
+  const dirs = ['', 'voice/'], exts = ['m4a', 'mp3', 'wav', 'mp4', 'aac', 'ogg'];
+  const fmt = t => isFinite(t) ? Math.floor(t / 60) + ':' + String(Math.floor(t % 60)).padStart(2, '0') : '0:00';
+  const all = [];
+  document.querySelectorAll('.vn').forEach(box => {
+    const file = box.dataset.file; if (!file) return;
+    const btn = box.querySelector('.vn-btn'), bar = box.querySelector('.vn-bar');
+    const cur = box.querySelector('.vn-cur'), dur = box.querySelector('.vn-dur');
+    const base = file.replace(/\.[^.]+$/, '');
+    const names = [base, base.toLowerCase()].filter((n, i, a) => a.indexOf(n) === i);
+    const cands = []; exts.forEach(x => dirs.forEach(d => names.forEach(n => cands.push(encodeURI(d + n + '.' + x)))));
+    const audio = new Audio(); audio.preload = 'metadata'; all.push(audio);
+    let i = 0, ok = false, failed = false, wantPlay = false;
+    const next = () => { if (i >= cands.length) { failed = true; console.warn('Voice note not loaded: ' + file, cands); return; } audio.src = cands[i++]; };
+    const setP = () => { const t = audio.duration || 0; bar.style.setProperty('--p', (t ? audio.currentTime / t * 100 : 0) + '%'); };
+    audio.addEventListener('loadedmetadata', () => {
+      ok = true; failed = false; dur.textContent = fmt(audio.duration); bar.max = audio.duration;
+      if (wantPlay) audio.play().catch(() => {});
+    });
+    audio.addEventListener('error', () => { if (!ok) { const e = audio.error; console.info('[voice] tried', audio.src, '| code', e && e.code, '|', e && e.message); next(); } });
+    audio.addEventListener('play', () => { box.classList.add('playing'); btn.setAttribute('aria-label', 'Pause voice note'); });
+    const stopped = () => { box.classList.remove('playing'); btn.setAttribute('aria-label', 'Play voice note'); };
+    audio.addEventListener('pause', stopped);
+    audio.addEventListener('ended', () => { stopped(); audio.currentTime = 0; bar.value = 0; cur.textContent = '0:00'; setP(); wantPlay = false; });
+    audio.addEventListener('timeupdate', () => { bar.value = audio.currentTime; cur.textContent = fmt(audio.currentTime); setP(); });
+    bar.addEventListener('input', () => { if (ok) { audio.currentTime = +bar.value; setP(); } });
+    btn.addEventListener('click', () => {
+      if (!ok && failed) { box.classList.remove('nope'); void box.offsetWidth; box.classList.add('nope'); i = 0; failed = false; next(); return; }
+      if (audio.paused) { all.forEach(a => a !== audio && a.pause()); wantPlay = true; audio.play().catch(() => {}); }
+      else { wantPlay = false; audio.pause(); }
+    });
+    next();
+  });
+  console.info('[voice] page URL:', location.href);
+})();
+
 /* ===== visual flair ===== */
 const REDUCE = matchMedia('(prefers-reduced-motion:reduce)').matches;
 
@@ -527,26 +626,6 @@ if (!REDUCE) addEventListener('scroll', () => secs.forEach(s => s.style.setPrope
 // flip cards: click, tap, or Enter/Space
 document.addEventListener('click', e => { const c = e.target.closest('.fc'); if (c) c.classList.toggle('on'); });
 document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('fc')) { e.preventDefault(); e.target.classList.toggle('on'); } });
-
-// allocator playground: alloc pops the free-list head, clicking a used block frees it back onto the head
-(function () {
-  const N = 24, g = document.getElementById('pg-grid'), ch = document.getElementById('pg-chain'), hx = i => i.toString(16).padStart(2, '0'); let free, used;
-  function draw(flash) {
-    g.innerHTML = '';
-    for (let i = 0; i < N; i++) {
-      const b = document.createElement('button'), u = used.has(i);
-      b.className = 'pg-b ' + (u ? 'used' : (i === free[0] ? 'head' : '')); b.textContent = hx(i); if (u) { b.title = 'free()'; b.onclick = () => { used.delete(i); free.unshift(i); draw(i); }; }
-      if (i === flash) b.classList.add('flash'); g.appendChild(b);
-    }
-    ch.textContent = 'head → ' + (free.slice(0, 6).map(hx).join(' → ') || 'NULL') + (free.length > 6 ? ' → …' : '');
-  }
-  function reset() { free = [...Array(N).keys()]; used = new Set(); draw(); }
-  document.getElementById('pg-alloc').onclick = e => {
-    if (!free.length) { e.target.animate([{ translate: '-4px' }, { translate: '4px' }, { translate: '0' }], { duration: 200, iterations: 2 }); return; }
-    const i = free.shift(); used.add(i); draw(i);
-  };
-  document.getElementById('pg-reset').onclick = reset; reset();
-})();
 </script>
 </body>
 </html>
